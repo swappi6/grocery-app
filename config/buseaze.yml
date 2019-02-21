@@ -1,0 +1,33 @@
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+      port: 8080
+      type: http
+
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: root
+
+  # the password
+  password:
+
+
+  # the JDBC URL
+  url: jdbc:mysql://localhost:3306/buseaze
+  properties:
+      charSet: UTF-8
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+
+redis:
+  #hostname: cab-info-new.olacabs-dev.in
+  hostname: 127.0.0.1
+  port: 6379
+  max_total: 100
+  max_idle: 500
+  connection_timeout: 500
+  read_timeout: 1000

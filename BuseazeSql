@@ -1,0 +1,30 @@
+CREATE TABLE `users` (
+`id` int(22) NOT NULL AUTO_INCREMENT,
+`country_code` varchar(10) DEFAULT '+91',
+`mobile_no` varchar(20) NOT NULL,
+`email` varchar(128),
+`first_name` varchar(128),
+`last_name` varchar(128),
+`lock_version` smallint(11) DEFAULT '0',
+`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY (`id`),
+key `idx_mobile_no` (`mobile_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `auth_token` (
+`user_id` int(22) NOT NULL AUTO_INCREMENT,
+`device_id` varchar(10),
+`access_token` varchar(128) NOT NULL,
+`refresh_token` varchar(128),
+`access_token_expiry` varchar(128),
+`refresh_token_expiry` varchar(128),
+`lock_version` smallint(11) DEFAULT '0',
+`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY (`user_id`,`device_id`),
+key `idx_device_id` (`device_id`),
+key `idx_access_token` (`access_token`),
+key `idx_refresh_token` (`refresh_token`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
