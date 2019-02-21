@@ -4,15 +4,15 @@ import java.util.Map;
 
 import javax.ws.rs.Path;
 
-import org.eclipse.jetty.server.Authentication.User;
+import org.grocery.config.GrocerySpringConfig;
 import org.grocery.Auth.AuthController;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
 import org.grocery.Auth.AuthTokenDao;
-import org.grocery.User.UserDao;
 import org.grocery.Error.BuseaseExceptionMapper;
+import org.grocery.User.User;
+import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
-import org.grocery.config.GrocerySpringConfig;
 import org.grocery.config.GroceryConfiguration;
 import org.grocery.config.RedisConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
