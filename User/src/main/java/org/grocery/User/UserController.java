@@ -33,6 +33,13 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+    @GET
+    @UnitOfWork
+    @Path("/hello/{name}")
+    public Response sample( @PathParam(value = "name") String name) {
+        return Response.ok(name +" ki maa ki chuut").build();
+    }
+    
     @POST
     @UnitOfWork
     @Path("/request_otp/{mobileNo}")

@@ -1,0 +1,4 @@
+java -jar target/Grocery-app-0.0.1-SNAPSHOT.jar server config/grocery.yml for running application 
+
+redis-server for starting redis server
+
