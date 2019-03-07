@@ -43,7 +43,7 @@ CREATE TABLE `items` (
 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`),
-key `idx_name` (`name`),
+key `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `categories` (
@@ -55,6 +55,6 @@ CREATE TABLE `categories` (
 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`),
 key `idx_name` (`name`),
-key `idx_parent` (`parent`),
+key `idx_parent` (`parent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
