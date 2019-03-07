@@ -71,7 +71,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     @Override
     public void run(GroceryConfiguration config, Environment env) {
         JedisPool jedisPool = initializeRedis(config);
-        env.jersey().register(new BuseaseExceptionMapper());
+//        env.jersey().register(new BuseaseExceptionMapper());
         env.jersey().register(AuthFilter.class);
         env.jersey().register(new RedisService(jedisPool));
         env.jersey().register(new UserDao(hibernate.getSessionFactory()));

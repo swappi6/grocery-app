@@ -2,3 +2,4 @@ java -jar target/Grocery-app-0.0.1-SNAPSHOT.jar server config/grocery.yml for ru
 
 redis-server for starting redis server
 
+java -jar target/Grocery-app-0.0.2-SNAPSHOT.jar server grocery.yml
