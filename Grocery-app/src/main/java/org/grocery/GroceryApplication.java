@@ -1,9 +1,13 @@
 package org.grocery;
 
+import java.util.EnumSet;
 import java.util.Map;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import javax.ws.rs.Path;
 
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.grocery.Auth.AuthController;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
@@ -78,8 +82,15 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         env.jersey().register(AuthController.class);
-        
-        
+        final FilterRegistration.Dynamic cors =
+                env.servlets().addFilter("CORS", CrossOriginFilter.class);
+        cors.setInitParameter("allowedOrigins", "*");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin,AUTH_TOKEN");
+        cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+        cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
+
+        // Add URL mapping
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
     }
     
     
