@@ -51,10 +51,18 @@ CREATE TABLE `categories` (
 `name` varchar(128) NOT NULL,
 `description` varchar(128),
 `parent` varchar(128),
+`image_url` varchar(128),
 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`),
 key `idx_name` (`name`),
 key `idx_parent` (`parent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO categories (id, name, description, parent, image_url)
+VALUES (1, "milk", "cow milk", "dairy", "/milk");
+
+INSERT INTO categories (id, name, description, image_url)
+VALUES (2, "dairy", "dairy products", "/dairy_products");
 

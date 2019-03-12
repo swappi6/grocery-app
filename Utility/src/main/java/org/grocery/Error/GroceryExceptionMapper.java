@@ -5,8 +5,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class BuseaseExceptionMapper implements ExceptionMapper<BuseaseException> {
-    public Response toResponse(BuseaseException exception) {
+public class GroceryExceptionMapper implements ExceptionMapper<GroceryException> {
+    public Response toResponse(GroceryException exception) {
         return Response.status(exception.getCode())
                 .entity(exception.getError())
                 .build();
