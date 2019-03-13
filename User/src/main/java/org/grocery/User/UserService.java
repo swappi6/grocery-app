@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
-import org.grocery.Error.BuseaseErrors;
-import org.grocery.Error.BuseaseException;
+import org.grocery.Error.GroceryErrors;
+import org.grocery.Error.GroceryException;
 import org.grocery.Utils.CacheService;
 import org.grocery.Utils.RandomGeneratorImpl;
 import org.grocery.Utils.SmsService;
@@ -38,9 +38,9 @@ public class UserService {
         smsService.send(message, mobileNo);
     }
     
-    public AuthTokens validateOtp(String mobileNo, String otp, String deviceId) throws BuseaseException{
+    public AuthTokens validateOtp(String mobileNo, String otp, String deviceId) throws GroceryException{
         boolean isValidOtp = isValidOtp(mobileNo, otp);
-        if (!isValidOtp) throw new BuseaseException(Response.Status.BAD_REQUEST.getStatusCode(),BuseaseErrors.INVALID_OTP);
+        if (!isValidOtp) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OTP);
         User user = userDao.findByMobileNo(mobileNo);
         if (null == user) {
             user = new User();
@@ -53,9 +53,9 @@ public class UserService {
         return tokens;
     }
     
-    public void updateUser(Long userId, UserProfile userProfile) throws BuseaseException{
+    public void updateUser(Long userId, UserProfile userProfile) throws GroceryException{
         Optional<User> user = userDao.findById(userId);
-        if (!user.isPresent()) throw new BuseaseException(Response.Status.BAD_REQUEST.getStatusCode(),BuseaseErrors.INVALID_USER);
+        if (!user.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_USER);
         user.get().setEmail(userProfile.getEmail());
         user.get().setEmail(userProfile.getEmail());
         user.get().setFirstName(userProfile.getFirstName());
@@ -63,9 +63,9 @@ public class UserService {
         userDao.update(user.get());
     }
     
-    public UserProfile getUser(Long userId) throws BuseaseException{
+    public UserProfile getUser(Long userId) throws GroceryException{
         Optional<User> user = userDao.findById(userId);
-        if (!user.isPresent()) throw new BuseaseException(Response.Status.BAD_REQUEST.getStatusCode(),BuseaseErrors.INVALID_USER);
+        if (!user.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_USER);
         UserProfile profile = new UserProfile();
         profile.setFirstName(user.get().getFirstName());
         profile.setLastName(user.get().getLastName());

@@ -1,17 +1,16 @@
-package org.grocery.Auth;
+package org.grocery.item;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,31 +18,30 @@ import io.dropwizard.hibernate.UnitOfWork;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/auth")
+@Path("/v1/item")
 @Component
-public class AuthController {
+public class ItemController {
     
     @Autowired
-    AuthService authService;
+    ItemService itemService;
     
-    @PUT
+    @GET
     @UnitOfWork
-    @Path("/refresh_access_token")
-    public Response updateCityRegion(@Valid String refreshToken) throws GroceryException{
+    @Path("/categoryItems")
+    public Response getCategoryItems(@QueryParam(value = "parent") String parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-        AuthTokens tokens = authService.refreshAccessToken(refreshToken);
-        return responseBuilder.entity(tokens)
+        List<Item> items = itemService.findByCategory(parent);
+        return responseBuilder.entity(items)
                 .build();
     }
     
-    @PUT
+    @GET
     @UnitOfWork
-    @Path("/tokens")
-    public Response getTokens() throws GroceryException{
+    @Path("/items")
+    public Response getAllItems() throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-        List<AuthToken> tokens = authService.findall();
-        return responseBuilder.entity(tokens)
+        List<Item> items = itemService.getAllItems();
+        return responseBuilder.entity(items)
                 .build();
     }
-    
 }

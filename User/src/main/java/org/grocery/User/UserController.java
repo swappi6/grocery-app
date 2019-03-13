@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Auth.Auth;
 import org.grocery.Auth.AuthTokens;
-import org.grocery.Error.BuseaseException;
+import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ public class UserController {
     @UnitOfWork
     @Path("/hello/{name}")
     public Response sample( @PathParam(value = "name") String name) {
-        return Response.ok(name +" ki maa ki chuut").build();
+        return Response.ok(name +" ki ki chuut").build();
     }
     
     @POST
@@ -54,7 +54,7 @@ public class UserController {
     @Path("/validate_otp/{mobileNo}")
     public Response validateOtp(@PathParam(value = "mobileNo") String mobileNo,
             @NotNull @QueryParam(value = "otp") String otp, 
-            @NotNull @QueryParam(value = "deviceId") String deviceId) throws BuseaseException{
+            @NotNull @QueryParam(value = "deviceId") String deviceId) throws GroceryException{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         AuthTokens tokens = userService.validateOtp(mobileNo, otp, deviceId);
         return responseBuilder.entity(tokens)
@@ -66,7 +66,7 @@ public class UserController {
     @Auth
     @Path("/update_user_profile")
     public Response updateUserProfile(@Valid UserProfile userProfile, @Context ContainerRequestContext context) 
-            throws BuseaseException {
+            throws GroceryException {
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.noContent();
         Long userId = (Long) context.getProperty("userId");
         userService.updateUser(userId, userProfile);
@@ -78,7 +78,7 @@ public class UserController {
     @Auth
     @Path("/get_user_profile")
     public Response getUserProfile(@Context ContainerRequestContext context) 
-            throws BuseaseException {
+            throws GroceryException {
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         Long userId = (Long) context.getProperty("userId");
         UserProfile user = userService.getUser(userId);

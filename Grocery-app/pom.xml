@@ -22,6 +22,11 @@
 		<artifactId>User</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>org.grocery</groupId>
+		<artifactId>Inventory</artifactId>
+		<version>${project.version}</version>
+	</dependency>
   </dependencies>
   <build>
     <plugins>
