@@ -3,6 +3,7 @@ package org.grocery.category;
 import java.util.List;
 import java.util.Optional;
 
+import org.grocery.item.Item;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,11 @@ public class CategoryDao extends AbstractDAO<Category> {
     
     public List<Category> findParentCategories() {
         return list(namedQuery("Category.findParentCategories"));
+    }
+    
+    public List<Category> findByCategory(String parent) {
+        return list(namedQuery("Category.findByCategory")
+                .setParameter("parent", parent));
     }
 
 }

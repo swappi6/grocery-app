@@ -1,4 +1,4 @@
-package org.grocery.category;
+package org.grocery.item;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -16,26 +16,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "categories")
+@Table(name = "items")
 @NamedQueries(
     {
         @NamedQuery(
-            name = "Category.findAll",
-            query = "SELECT m FROM Category m"
+            name = "Item.findAll",
+            query = "SELECT m FROM Item m"
         ),
         @NamedQuery(
-                name = "Category.findParentCategories",
-                query = "SELECT m FROM Category m "
-                        + "where m.parent is null"
-        ),
-        @NamedQuery(
-                name = "Category.findByCategory",
-                query = "SELECT m FROM Category m "
+                name = "Item.findByCategory",
+                query = "SELECT m FROM Item m "
                         + "where m.parent = :parent"
         )
     }
 )
-public class Category {
+public class Item {
     
     @Id
     @Column(name = "id", nullable = false)
@@ -53,16 +48,22 @@ public class Category {
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
     
+    @Column(name = "price", nullable = true)
+    private Double price;
+    
+    @Column(name = "discounted_price", nullable = true)
+    private String discountedPrice;
+    
     @Column(name = "created_at", nullable = true)
     private Timestamp createdAt;
     
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
 
-    public Category() {
+    public Item() {
     }
     
-    public Category(Long id, String name, String description, String imageUrl) {
+    public Item(Long id, String name, String description, String imageUrl) {
         super();
         this.id = id;
         this.name = name;

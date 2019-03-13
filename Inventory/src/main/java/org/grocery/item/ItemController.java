@@ -1,4 +1,4 @@
-package org.grocery.category;
+package org.grocery.item;
 
 import java.util.List;
 
@@ -18,32 +18,30 @@ import io.dropwizard.hibernate.UnitOfWork;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/category")
+@Path("/v1/item")
 @Component
-public class CategoryController {
+public class ItemController {
     
     @Autowired
-    CategoryService categoryService;
+    ItemService itemService;
     
     @GET
     @UnitOfWork
-    @Path("/categories")
-    public Response getCategories() throws Exception{
+    @Path("/categoryItems")
+    public Response getCategoryItems(@QueryParam(value = "parent") String parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-        List<Category> categories = categoryService.getParentCategories();
-        return responseBuilder.entity(categories)
+        List<Item> items = itemService.findByCategory(parent);
+        return responseBuilder.entity(items)
                 .build();
     }
     
     @GET
     @UnitOfWork
-    @Path("/subCategory")
-    public Response getSubCategories(@QueryParam(value = "parent") String parent) throws Exception{
+    @Path("/items")
+    public Response getAllItems() throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-        List<Category> categories = categoryService.findByCategory(parent);
-        return responseBuilder.entity(categories)
+        List<Item> items = itemService.getAllItems();
+        return responseBuilder.entity(items)
                 .build();
     }
-    
-
 }

@@ -19,5 +19,7 @@ public class CategoryService {
         return categoryDao.findParentCategories();
     }
     
-    
+    public List<Category> findByCategory(String parent) throws Exception {
+        return categoryDao.findByCategory(parent);
+    }
 }
