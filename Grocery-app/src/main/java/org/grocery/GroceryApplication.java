@@ -11,6 +11,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
 import org.grocery.Auth.AuthTokenDao;
+import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
@@ -78,7 +79,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     @Override
     public void run(GroceryConfiguration config, Environment env) {
         JedisPool jedisPool = initializeRedis(config);
-//        env.jersey().register(new BuseaseExceptionMapper());
+        env.jersey().register(new GroceryExceptionMapper());
         env.jersey().register(AuthFilter.class);
         env.jersey().register(new RedisService(jedisPool));
         env.jersey().register(new UserDao(hibernate.getSessionFactory()));
