@@ -5,3 +5,4 @@ dependency-reduced-pom.xml
 .idea
 *target*
 /bin/
+ec2-user@13.127.36.79
