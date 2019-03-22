@@ -19,6 +19,7 @@ public class S3FileStorage implements FileStore{
     
     private static final String clientRegion = "ap-south-1";
     private static final BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAJMRZHQH5FIS3XZNA", "UW+nwoUyJdyGZ5icbBui2j/7rXMcsVPsiCTE+EhQ");
+    private static final String s3Url = "https://s3.ap-south-1.amazonaws.com/{bucket}/{fileName}";
 
     public String upload(File file, String fileName, String bucketName) throws GroceryException{
         try {
@@ -30,12 +31,18 @@ public class S3FileStorage implements FileStore{
             // Upload a file as a new object with ContentType and title specified.
             PutObjectRequest request = new PutObjectRequest(bucketName, fileName, file);
             s3Client.putObject(request);
+            return gets3Url(bucketName, fileName);
         }
         catch(Exception e) {
             e.printStackTrace();
             throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.INVALID_REFRESH_TOKEN);
         }
-        return null;
+    }
+    
+    private String gets3Url(String bucketName, String fileName) {
+        String url = s3Url;
+        return url.replace("{bucket}", bucketName)
+        .replace("{fileName}", fileName);
     }
 
 }
