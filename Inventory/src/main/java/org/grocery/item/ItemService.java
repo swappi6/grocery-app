@@ -3,10 +3,7 @@ package org.grocery.item;
 import java.util.List;
 
 import org.grocery.Error.GroceryException;
-import org.grocery.Utils.Constants;
 import org.grocery.Utils.FileStore;
-import org.grocery.category.Category;
-import org.grocery.category.CategoryData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

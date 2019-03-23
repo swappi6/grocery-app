@@ -15,6 +15,8 @@ import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
+import org.grocery.admin.Admin;
+import org.grocery.admin.AdminDao;
 import org.grocery.category.Category;
 import org.grocery.category.CategoryDao;
 import org.grocery.config.GroceryConfiguration;
@@ -39,7 +41,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         new GroceryApplication().run(args);
     }
     
-    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class) {
+    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class) {
         public DataSourceFactory getDataSourceFactory(GroceryConfiguration configuration) {
             return configuration.getDataSourceFactory();
         }
@@ -86,6 +88,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));
         env.jersey().register(new CategoryDao(hibernate.getSessionFactory()));
         env.jersey().register(new ItemDao(hibernate.getSessionFactory()));
+        env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);

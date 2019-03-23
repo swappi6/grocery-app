@@ -39,7 +39,7 @@ public class AdminController {
     @UnitOfWork
     @Path("/login")
     public Response getUserProfile(@Valid LoginProfile loginDetails) 
-            throws GroceryException, JSONException {
+            throws GroceryException {
        ResponseBuilder responseBuilder = Response.ok(); 
        AdminProfile adminProfile = adminService.getUser(loginDetails);
        return responseBuilder.entity(adminProfile)
