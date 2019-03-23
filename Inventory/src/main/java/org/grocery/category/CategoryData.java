@@ -15,4 +15,5 @@ public class CategoryData {
     private String description;
     private String parent;
     private File image;
+    private String encodedImage;
 }
