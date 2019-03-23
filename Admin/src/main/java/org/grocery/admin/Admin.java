@@ -24,16 +24,16 @@ import lombok.ToString;
 @NamedQueries(
     {
         @NamedQuery(
-            name = "User.findAll",
+            name = "Admin.findAll",
             query = "SELECT m FROM Admin m"
         ),
         @NamedQuery(
-                name = "User.findByMobile",
+                name = "Admin.findByEmail",
                 query = "select e from Admin e "
-                        + "where e.mobileNo = :mobileNo "
+                        + "where e.email = :email "
         ),
         @NamedQuery(
-                name = "User.findById",
+                name = "Admin.findById",
                 query = "select e from Admin e "
                         + "where e.id = :id "
         )
