@@ -34,8 +34,8 @@ public class ItemService {
         item.setParent(itemData.getParent());
         item.setPrice(itemData.getPrice());
         item.setDiscountedPrice(itemData.getDiscountedPrice());
-        String imageUrl = store.upload(itemData.getImage(), itemData.getName(), Constants.Buckets.ITEM);
-        item.setImageUrl(imageUrl);
+//        String imageUrl = store.upload(itemData.getImage(), itemData.getName(), Constants.Buckets.ITEM);
+//        item.setImageUrl(imageUrl);
         itemDao.create(item);
     }
 }
