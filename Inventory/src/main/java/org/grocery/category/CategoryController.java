@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,10 +51,9 @@ public class CategoryController {
     @PUT
     @UnitOfWork
     @Path("/updateCategory")
-    public Response updateUserProfile(@Valid CategoryData categoryData) 
-            throws Exception {
+    public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
-        categoryService.updateCategory(categoryData);
+        categoryService.createCategory(categoryData);
         return responseBuilder.build();
     }
     
