@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -48,14 +48,13 @@ public class CategoryController {
                 .build();
     }
     
-    @PUT
+    @POST
     @UnitOfWork
-    @Path("/updateCategory")
+    @Path("/createCategory")
     public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
         categoryService.createCategory(categoryData);
         return responseBuilder.build();
     }
-    
 
 }

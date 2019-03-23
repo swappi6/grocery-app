@@ -1,4 +1,4 @@
-package org.grocery.category;
+package org.grocery.item;
 
 import java.io.File;
 
@@ -9,10 +9,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryData {
+
+public class ItemData {
     @NotNull
     private String name;
     private String description;
+    @NotNull
     private String parent;
     private File image;
+    @NotNull
+    private Double price;
+    private String discountedPrice;
+
 }
