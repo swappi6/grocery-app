@@ -36,9 +36,9 @@ public class AdminDao extends AbstractDAO<Admin>{
 	        return list(namedQuery("Admin.findAll"));
 	    }
 
-	     public Admin findByMobileNo(String mobileNo) {
-	         return (Admin) namedQuery("Admin.findByMobile")
-	                .setParameter("mobileNo", mobileNo)
+	     public Admin findByEmail(String email) {
+	         return (Admin) namedQuery("Admin.findByEmail")
+	                .setParameter("email", email)
 	                .uniqueResult();	         
 	      }
 }
