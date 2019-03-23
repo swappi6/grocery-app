@@ -1,6 +1,7 @@
 package org.grocery.Utils;
 
 import java.io.File;
+import java.io.InputStream;
 
 import javax.ws.rs.core.Response;
 
@@ -12,6 +13,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 @Component
@@ -21,7 +23,7 @@ public class S3FileStorage implements FileStore{
     private static final BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAJMRZHQH5FIS3XZNA", "UW+nwoUyJdyGZ5icbBui2j/7rXMcsVPsiCTE+EhQ");
     private static final String s3Url = "https://s3.ap-south-1.amazonaws.com/{bucket}/{fileName}";
 
-    public String upload(File file, String fileName, String bucketName) throws GroceryException{
+    public String upload(File file, String fileName, String bucketName, InputStream inputStream) throws GroceryException{
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
@@ -29,7 +31,8 @@ public class S3FileStorage implements FileStore{
                     .build();
             
             // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileName, file);
+//            PutObjectRequest request = new PutObjectRequest(bucketName, fileName, file);
+            PutObjectRequest request = new PutObjectRequest(bucketName, fileName, inputStream, new ObjectMetadata());
             s3Client.putObject(request);
             return gets3Url(bucketName, fileName);
         }

@@ -1,5 +1,6 @@
 package org.grocery.category;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +42,12 @@ public class CategoryService {
         
     }
     
-    public void createCategory(CategoryData categoryData) throws GroceryException{
+    public void createCategory(CategoryData categoryData, InputStream inputStream) throws GroceryException{
         Category cat = new Category();
         cat.setName(categoryData.getName());
         cat.setDescription(categoryData.getDescription());
         cat.setParent(categoryData.getParent());
-        String imageUrl = store.upload(categoryData.getImage(), categoryData.getName(), Constants.Buckets.CATEGORY);
+        String imageUrl = store.upload(categoryData.getImage(), categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
         cat.setImageUrl(imageUrl);
         categoryDao.create(cat);
     }
