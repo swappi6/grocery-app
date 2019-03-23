@@ -1,5 +1,7 @@
 package org.grocery.item;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,6 +18,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.amazonaws.util.Base64;
 
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -53,7 +57,10 @@ public class ItemController {
     @Path("/createItem")
     public Response updateUserProfile(@Valid ItemData itemData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
-        itemService.createCategory(itemData);
+        String [] strList = itemData.getEncodedImage().split(",");
+        byte[] abc = Base64.decode(strList[strList.length-1]);
+        InputStream inputStream = new ByteArrayInputStream(abc);
+        itemService.createCategory(itemData, inputStream);
         return responseBuilder.build();
     }
 }

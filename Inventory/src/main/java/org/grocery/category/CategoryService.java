@@ -47,7 +47,7 @@ public class CategoryService {
         cat.setName(categoryData.getName());
         cat.setDescription(categoryData.getDescription());
         cat.setParent(categoryData.getParent());
-        String imageUrl = store.upload(categoryData.getImage(), categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
+        String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
         cat.setImageUrl(imageUrl);
         categoryDao.create(cat);
     }

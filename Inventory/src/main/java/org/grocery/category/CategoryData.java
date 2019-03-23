@@ -1,7 +1,5 @@
 package org.grocery.category;
 
-import java.io.File;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -14,6 +12,5 @@ public class CategoryData {
     private String name;
     private String description;
     private String parent;
-    private File image;
     private String encodedImage;
 }

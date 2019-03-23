@@ -1,7 +1,5 @@
 package org.grocery.item;
 
-import java.io.File;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -16,7 +14,7 @@ public class ItemData {
     private String description;
     @NotNull
     private String parent;
-    private File image;
+    private String encodedImage;
     @NotNull
     private Double price;
     private String discountedPrice;

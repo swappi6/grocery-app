@@ -57,11 +57,9 @@ public class CategoryController {
     @UnitOfWork
     @Path("/createCategory")
     public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
-//        byte[] abc = Base64.decode(categoryData.getEncodedImage());
+        ResponseBuilder responseBuilder = Response.noContent();
         String [] strList = categoryData.getEncodedImage().split(",");
         byte[] abc = Base64.decode(strList[strList.length-1]);
-//        FileUtils.writeByteArrayToFile( categoryData.getImage(), abc );
-        ResponseBuilder responseBuilder = Response.noContent();
         InputStream inputStream = new ByteArrayInputStream(abc);
         categoryService.createCategory(categoryData, inputStream);
         return responseBuilder.build();
