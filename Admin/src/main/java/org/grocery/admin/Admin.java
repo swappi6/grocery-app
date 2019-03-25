@@ -73,7 +73,11 @@ public class Admin {
     
     @Column(name = "password", nullable = true)
     private String password;
+    
+    @Column(name = "roleid", nullable = true)
+    private long roleId;
 
+    
     public Admin() {
     }
     /*

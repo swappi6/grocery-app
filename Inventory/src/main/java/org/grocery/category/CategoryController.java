@@ -35,17 +35,28 @@ public class CategoryController {
     
     @GET
     @UnitOfWork
-    @Path("/categories")
-    public Response getCategories() throws Exception{
+    @Path("/root-categories")
+    public Response getRootCategories() throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Category> categories = categoryService.getParentCategories();
         return responseBuilder.entity(categories)
                 .build();
     }
     
+
     @GET
     @UnitOfWork
-    @Path("/subCategory")
+    @Path("/categories")
+    public Response getCategories() throws Exception{
+        ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        List<Category> categories = categoryService.getAllCategories();
+        return responseBuilder.entity(categories)
+                .build();
+    }
+    
+    @GET
+    @UnitOfWork
+    @Path("/sub-category")
     public Response getSubCategories(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Category> categories = categoryService.findByCategory(parent);
@@ -55,14 +66,18 @@ public class CategoryController {
     
     @POST
     @UnitOfWork
-    @Path("/createCategory")
+    @Path("/create-category")
     public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
-        ResponseBuilder responseBuilder = Response.noContent();
+       // ResponseBuilder responseBuilder = Response.noContent();
         String [] strList = categoryData.getEncodedImage().split(",");
         byte[] abc = Base64.decode(strList[strList.length-1]);
+        //FileUtils.writeByteArrayToFile( categoryData.getImage(), abc );
+        ResponseBuilder responseBuilder = Response.ok();
         InputStream inputStream = new ByteArrayInputStream(abc);
         categoryService.createCategory(categoryData, inputStream);
-        return responseBuilder.build();
+//        categoryData.setImageUrl(imageUrl);
+        return responseBuilder.entity(categoryData)
+        		.build();
     }
 
 }

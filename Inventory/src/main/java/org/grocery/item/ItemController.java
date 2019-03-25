@@ -34,7 +34,7 @@ public class ItemController {
     
     @GET
     @UnitOfWork
-    @Path("/categoryItems")
+    @Path("/category-items")
     public Response getCategoryItems(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Item> items = itemService.findByCategory(parent);
@@ -54,7 +54,7 @@ public class ItemController {
     
     @POST
     @UnitOfWork
-    @Path("/createItem")
+    @Path("/create-item")
     public Response updateUserProfile(@Valid ItemData itemData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
         String [] strList = itemData.getEncodedImage().split(",");
