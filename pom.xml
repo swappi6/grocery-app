@@ -159,6 +159,7 @@
   	<module>Payment</module>
   	<module>Inventory</module>
   	<module>Utility</module>
+  	<module>Admin</module>
   	<module>Grocery-app</module>
   </modules>
 </project>

@@ -6,3 +6,6 @@ dependency-reduced-pom.xml
 *target*
 /bin/
 ec2-user@13.127.36.79
+Inventory/target*
+Utility/target/
+target/
