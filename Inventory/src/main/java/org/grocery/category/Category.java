@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -14,7 +16,7 @@ import javax.persistence.Table;
 
 import org.grocery.item.Item;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
@@ -40,7 +42,7 @@ import lombok.ToString;
         @NamedQuery(
                 name = "Category.findByCategory",
                 query = "SELECT m FROM Category m "
-                        + "where m.parent = :parent"
+                        + "where m.parent.id = :parent"
         )
     }
 )
@@ -56,9 +58,6 @@ public class Category {
     
     @Column(name = "description", nullable = true)
     private String description;
-
-    @Column(name = "parent", nullable = true)
-    private String parent;
     
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
@@ -69,10 +68,22 @@ public class Category {
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
     
+    @ManyToOne()
+    @JoinColumn(name="parent")
+    private Category parent;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="parent")
+    private List<Category> subCategories;
+    
     @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private List<Item> items;
 
+    public Category(Long id) {
+        this.id = id;
+    }
+    
     public Category() {
     }
     

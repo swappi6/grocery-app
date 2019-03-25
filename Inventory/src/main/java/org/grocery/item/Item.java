@@ -50,9 +50,6 @@ public class Item {
     
     @Column(name = "description", nullable = true)
     private String description;
-
-//    @Column(name = "parent", nullable = true)
-//    private String parent;
     
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
@@ -75,6 +72,10 @@ public class Item {
     private Category category;
 
     public Item() {
+    }
+    
+    public Item(Long id) {
+        this.id = id;
     }
     
     public Item(Long id, String name, String description, String imageUrl) {

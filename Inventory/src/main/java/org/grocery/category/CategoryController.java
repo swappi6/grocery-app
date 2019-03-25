@@ -46,7 +46,7 @@ public class CategoryController {
     @GET
     @UnitOfWork
     @Path("/subCategory")
-    public Response getSubCategories(@QueryParam(value = "parent") String parent) throws Exception{
+    public Response getSubCategories(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Category> categories = categoryService.findByCategory(parent);
         return responseBuilder.entity(categories)

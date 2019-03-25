@@ -27,7 +27,7 @@ public class CategoryService {
         return categoryDao.findParentCategories();
     }
     
-    public List<Category> findByCategory(String parent) throws Exception {
+    public List<Category> findByCategory(Long parent) throws Exception {
         return categoryDao.findByCategory(parent);
     }
     
@@ -46,7 +46,7 @@ public class CategoryService {
         Category cat = new Category();
         cat.setName(categoryData.getName());
         cat.setDescription(categoryData.getDescription());
-        cat.setParent(categoryData.getParent());
+//        cat.setParent(categoryData.getParent());
         String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
         cat.setImageUrl(imageUrl);
         categoryDao.create(cat);
