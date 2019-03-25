@@ -13,7 +13,7 @@ public class ItemData {
     private String name;
     private String description;
     @NotNull
-    private String parent;
+    private Long parent;
     private String encodedImage;
     @NotNull
     private Double price;

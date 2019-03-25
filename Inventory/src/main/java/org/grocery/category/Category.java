@@ -1,5 +1,6 @@
 package org.grocery.category;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.grocery.item.Item;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -61,6 +68,10 @@ public class Category {
     
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "category")
+    private List<Item> items;
 
     public Category() {
     }

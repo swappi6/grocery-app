@@ -37,9 +37,9 @@ public class ItemDao extends AbstractDAO<Item> {
         return list(namedQuery("Item.findAll"));
     }
     
-    public List<Item> findByCategory(String parent) {
-        return (List<Item>) namedQuery("Item.findByCategory")
-                .setParameter("parent", parent);
+    public List<Item> findByCategory(Long parent) {
+        return list(namedQuery("Item.findByCategory")
+                .setParameter("category", parent));
     }
 
 }

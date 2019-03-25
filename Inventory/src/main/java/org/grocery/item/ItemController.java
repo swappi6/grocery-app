@@ -35,7 +35,7 @@ public class ItemController {
     @GET
     @UnitOfWork
     @Path("/categoryItems")
-    public Response getCategoryItems(@QueryParam(value = "parent") String parent) throws Exception{
+    public Response getCategoryItems(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Item> items = itemService.findByCategory(parent);
         return responseBuilder.entity(items)
@@ -60,7 +60,7 @@ public class ItemController {
         String [] strList = itemData.getEncodedImage().split(",");
         byte[] abc = Base64.decode(strList[strList.length-1]);
         InputStream inputStream = new ByteArrayInputStream(abc);
-        itemService.createCategory(itemData, inputStream);
+        itemService.createItem(itemData, inputStream);
         return responseBuilder.build();
     }
 }

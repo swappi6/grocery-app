@@ -22,10 +22,9 @@ import org.grocery.category.CategoryDao;
 import org.grocery.config.GroceryConfiguration;
 import org.grocery.config.GrocerySpringConfig;
 import org.grocery.config.RedisConfiguration;
+import org.grocery.item.Item;
 import org.grocery.item.ItemDao;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.sun.mail.imap.protocol.Item;
 
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
