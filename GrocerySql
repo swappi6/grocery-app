@@ -34,15 +34,12 @@ key `idx_refresh_token` (`refresh_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `items` (
-`id` int(22) NOT NULL AUTO_INCREMENT,
+`id` int(22) NOT NULL,
 `price` float(10,2) NOT NULL,
 `name` varchar(128) NOT NULL,
 `description` varchar(128),
 `discounted_price` float(10,2),
 `availability` varchar(128),
-`image_url` varchar(128),
-`category` int(22) NOT NULL,
-`subscribable` bool,
 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`),
@@ -50,7 +47,7 @@ key `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `categories` (
-`id` int(22) NOT NULL AUTO_INCREMENT,
+`id` int(22) NOT NULL,
 `name` varchar(128) NOT NULL,
 `description` varchar(128),
 `parent` varchar(128),
