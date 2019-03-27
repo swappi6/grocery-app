@@ -49,8 +49,8 @@ public class Offer {
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 private long id;
 
-@Column(name = "offer_name", nullable = false)
-private String offerName;
+@Column(name = "name", nullable = false)
+private String name;
 
 @Column(name = "type", nullable = false)
 private String type;
@@ -61,8 +61,8 @@ private Date expirydate;
 @Column(name= "image_url",nullable = true)
 private String imageUrl;
 
-@Column(name= "state",nullable = false)
-private Boolean state;
+@Column(name= "active",nullable = false)
+private Boolean active;
 
 @Column(name= "min_amount",nullable = false)
 private int minAmount;

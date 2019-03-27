@@ -34,14 +34,14 @@ public class OfferDao extends AbstractDAO<Offer> {
         return list(namedQuery("Offer.findAll"));
     }
 
-     public Offer findByValid(String date , Integer value) {
-         return (Offer) namedQuery("Offer.findByValid")
+     public List<Offer> findByValid(String date , Integer value) {
+         return list(namedQuery("Offer.findValid"))
                 .setParameter("date", date)
                 .setParameter("value",value);
       }
      
-     public Offer findByValue(String date , Integer value) {
-         return (Offer) namedQuery("Offer.findByValue")
+     public List<Offer> findByValue(String date , Integer value) {
+         return list(namedQuery("Offer.findByValue"))
                 .setParameter("date", date)
                 .setParameter("value",value);
       }
