@@ -1,6 +1,7 @@
 package org.grocery.category;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.grocery.Error.GroceryException;
 import org.grocery.Utils.Constants;
 import org.grocery.Utils.EncodedStringHelper;
 import org.grocery.Utils.FileStore;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -71,6 +73,11 @@ public class CategoryService {
             String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
             cat.setImageUrl(imageUrl);
         }
-        categoryDao.create(cat);
+        try {
+            categoryDao.create(cat);
+        } catch (ConstraintViolationException e) {
+            throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(), new Object[]{e.getCause().getMessage()});
+        }
+                
     }
 }

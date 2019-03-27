@@ -74,9 +74,9 @@ public class CategoryController {
     @PUT
     @UnitOfWork
     @Path("/update-category/{categoryId}")
-    public Response updateItem(CategoryData categoryData, @PathParam(value = "categoryId") Long categoryId) throws GroceryException {
+    public Response updateItem(@PathParam(value = "categoryId") Long categoryId, CategoryData categoryData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
-        categoryService.updateCategory(categoryId, categoryData);
+        categoryService.updateCategory(categoryData, categoryId);
         return responseBuilder.build();
     }
     
