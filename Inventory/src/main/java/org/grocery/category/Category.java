@@ -76,6 +76,7 @@ public class Category {
     @OneToMany(mappedBy="parent")
     private List<Category> subCategories;
     
+    @JsonIgnore
     @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private List<Item> items;
