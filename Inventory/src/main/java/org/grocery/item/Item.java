@@ -1,6 +1,7 @@
 package org.grocery.item;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -67,7 +68,7 @@ public class Item {
     private Timestamp updatedAt;
     
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name= "category_id")
     private Category category;
 

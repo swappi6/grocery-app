@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-@Component("randomGeneratorImpl")
+@Component
 public class RandomGeneratorImpl implements RandomGenerator{
     
     public RandomGeneratorImpl() {

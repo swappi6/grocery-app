@@ -11,6 +11,6 @@ public class CategoryData {
     @NotNull
     private String name;
     private String description;
-    private String parent;
+    private Long parent;
     private String encodedImage;
 }

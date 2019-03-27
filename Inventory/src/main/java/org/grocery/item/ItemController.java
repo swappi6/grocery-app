@@ -1,14 +1,15 @@
 package org.grocery.item;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -18,8 +19,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.amazonaws.util.Base64;
 
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -55,12 +54,27 @@ public class ItemController {
     @POST
     @UnitOfWork
     @Path("/create-item")
-    public Response updateUserProfile(@Valid ItemData itemData) throws GroceryException {
+    public Response createItem(@Valid ItemData itemData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
-        String [] strList = itemData.getEncodedImage().split(",");
-        byte[] abc = Base64.decode(strList[strList.length-1]);
-        InputStream inputStream = new ByteArrayInputStream(abc);
-        itemService.createItem(itemData, inputStream);
+        itemService.createItem(itemData);
+        return responseBuilder.build();
+    }
+    
+    @PUT
+    @UnitOfWork
+    @Path("/update-item/{itemId}")
+    public Response updateItem(ItemData itemData, @PathParam(value = "itemId") Long itemId) throws GroceryException {
+        ResponseBuilder responseBuilder = Response.noContent();
+        itemService.updateItem(itemData, itemId);
+        return responseBuilder.build();
+    }
+    
+    @DELETE
+    @UnitOfWork
+    @Path("/delete-item/{itemId}")
+    public Response deleteItem(@PathParam(value = "itemId") Long itemId) throws GroceryException {
+        ResponseBuilder responseBuilder = Response.noContent();
+        itemService.delete(itemId);
         return responseBuilder.build();
     }
 }
