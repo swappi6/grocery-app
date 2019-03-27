@@ -68,7 +68,7 @@ public class Item {
     private Timestamp updatedAt;
     
     @JsonBackReference
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name= "category_id")
     private Category category;
 
