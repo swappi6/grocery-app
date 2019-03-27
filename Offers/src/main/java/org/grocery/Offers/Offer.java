@@ -53,7 +53,7 @@ private long id;
 private String name;
 
 @Column(name = "type", nullable = false)
-private String type;
+private OfferType type;
 
 @Column(name = "expiry_date", nullable = false)
 private Date expirydate;

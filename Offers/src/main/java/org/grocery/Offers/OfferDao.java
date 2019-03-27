@@ -3,6 +3,7 @@ package org.grocery.Offers;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -35,14 +36,14 @@ public class OfferDao extends AbstractDAO<Offer> {
     }
 
      public List<Offer> findByValid(String date , Integer value) {
-         return list(namedQuery("Offer.findValid"))
-                .setParameter("date", date)
-                .setParameter("value",value);
+         return list(namedQuery("Offer.findValid")
+        		.setParameter("date", date)
+                .setParameter("value",value));
       }
      
      public List<Offer> findByValue(String date , Integer value) {
-         return list(namedQuery("Offer.findByValue"))
+         return list(namedQuery("Offer.findByValue")
                 .setParameter("date", date)
-                .setParameter("value",value);
+                .setParameter("value",value));
       }
 }
