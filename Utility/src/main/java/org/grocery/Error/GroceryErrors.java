@@ -9,4 +9,6 @@ public class GroceryErrors {
     public static final GroceryError S3_UPLOAD_ERROR = new GroceryError("S3_UPLOAD_ERROR", " Error uploading image");
     public static final GroceryError INVALID_PASSWORD = new GroceryError("INVALID_PASSWORD", "Password Incorrect");
     public static final GroceryError USER_PRESENT = new GroceryError("USER_PRESENT", "User Already Exists with the given EmailId");
+    public static final GroceryError INVALID_ITEM_ID = new GroceryError("INVALID_ITEM_ID", "Item doesn't exist");
+    public static final GroceryError INVALID_CATEGORY_ID = new GroceryError("INVALID_CATEGORY_ID", "Category doesn't exist");
 }    

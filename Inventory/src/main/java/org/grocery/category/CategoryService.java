@@ -2,7 +2,11 @@ package org.grocery.category;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
+import javax.ws.rs.core.Response;
+
+import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
 import org.grocery.Utils.Constants;
 import org.grocery.Utils.EncodedStringHelper;
@@ -36,18 +40,25 @@ public class CategoryService {
         categoryDao.delete(new Category(id));
     }
     
-    public void updateCategory(Long categoryId, CategoryData categoryData) throws GroceryException{
-        Category cat = new Category();
-        cat.setId(categoryId);
-        cat.setName(categoryData.getName());
-        cat.setDescription(categoryData.getDescription());
-        cat.setParent(new Category(categoryData.getParent()));
-        InputStream inputStream = encodedStringHelper.getInputStream(categoryData.getEncodedImage());
+    public void updateCategory(CategoryData categoryData, Long categoryId) throws GroceryException{
+        Optional<Category> optionalCategory = categoryDao.findById(categoryId);
+        if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
+        Category category = optionalCategory.get();
+        if (categoryData.getName() != null)
+            category.setName(categoryData.getName());
+        if (categoryData.getDescription() != null)
+            category.setDescription(categoryData.getDescription());
+        InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
-            cat.setImageUrl(imageUrl);
+            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.ITEM, inputStream);
+            category.setImageUrl(imageUrl);
         }
-        categoryDao.update(cat);
+        if (categoryData.getParent() != null) {
+            Category cat = new Category();
+            cat.setId(categoryData.getParent());
+            category.setParent(cat);
+        }
+        categoryDao.update(category);
     }
 
     public void createCategory(CategoryData categoryData) throws GroceryException{
