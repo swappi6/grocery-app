@@ -1,9 +1,9 @@
 package org.grocery.Offers;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +16,8 @@ public class OfferDao extends AbstractDAO<Offer> {
  
     public OfferDao(SessionFactory sessionFactory) {
 		super(sessionFactory);
+		this.factory = sessionFactory;
 	}
-
 
     public OfferDao() {
         super(factory);
@@ -35,15 +35,9 @@ public class OfferDao extends AbstractDAO<Offer> {
         return list(namedQuery("Offer.findAll"));
     }
 
-     public List<Offer> findByValid(String date , Integer value) {
-         return list(namedQuery("Offer.findValid")
-        		.setParameter("date", date)
-                .setParameter("value",value));
+     public List<Offer> findAllValid(Date date) {
+         return list(namedQuery("Offer.findAllValid")
+        		.setParameter("date", date));
       }
      
-     public List<Offer> findByValue(String date , Integer value) {
-         return list(namedQuery("Offer.findByValue")
-                .setParameter("date", date)
-                .setParameter("value",value));
-      }
 }

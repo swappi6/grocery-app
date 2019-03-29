@@ -1,9 +1,7 @@
 package org.grocery.Offers;
 
-public class OfferType {
+import org.springframework.stereotype.Component;
 
-		enum Type {
-			percentage,
-			absolute
-		}
+public enum OfferType {
+	PERCENTAGE, ABSOLUTE;
 }

@@ -3,6 +3,8 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,19 +25,13 @@ import lombok.ToString;
 	    {
 	        @NamedQuery(
 	            name = "Offer.findAll",
-	            query = "SELECT m FROM Offer m"
+	            query = "SELECT e FROM Offer e"
 	        ),
 	        @NamedQuery(
-	        		name = "Offer.findByValid",
-	        		query = "SELECT e FROM Offer e"
-	        				+"where e.expirydate =< :currentdate AND e.value >= :value"
-	        		), 
-	        
-	        @NamedQuery(
-		            name = "Offer.findByValue",
-		            query = "SELECT e FROM Offer e"
-		            		+"where e.value >= :value AND e.expirydate =< :currentdate"
-		        ),
+	        		name = "Offer.findAllValid",
+	        		query = "SELECT e FROM Offer e "
+	        				+"where e.expiryDate <= :date AND e.active=true"
+	        		),
 	        @NamedQuery(
 	                name = "Offer.findById",
 	                query = "select e from Offer e "
@@ -52,11 +48,12 @@ private long id;
 @Column(name = "name", nullable = false)
 private String name;
 
+@Enumerated(EnumType.STRING)
 @Column(name = "type", nullable = false)
 private OfferType type;
 
 @Column(name = "expiry_date", nullable = false)
-private Date expirydate;
+private Date expiryDate;
 
 @Column(name= "image_url",nullable = true)
 private String imageUrl;
