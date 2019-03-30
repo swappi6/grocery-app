@@ -36,6 +36,16 @@ import lombok.ToString;
                 name = "Item.findByCategory",
                 query = "SELECT m FROM Item m "
                         + "where m.category.id = :category"
+        ),
+        @NamedQuery(
+                name = "Item.searchByName",
+                query = "SELECT m FROM Item m "
+                        + "where m.name like :name"
+        ),
+        @NamedQuery(
+                name = "Item.searchByDescription",
+                query = "SELECT m FROM Item m "
+                        + "where m.description like :description"
         )
     }
 )

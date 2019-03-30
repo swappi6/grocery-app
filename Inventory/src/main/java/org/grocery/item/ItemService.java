@@ -55,6 +55,13 @@ public class ItemService {
         itemDao.create(item);
     }
     
+    public List<Item> searchItem(String search) throws GroceryException{
+        List<Item> itemByName = itemDao.searchByName(search);
+        List<Item> itemByDesc = itemDao.searchByDescription(search);
+        itemByName.addAll(itemByDesc);
+        return itemByName;
+    }
+    
     public void updateItem(ItemData itemData, Long itemId) throws GroceryException{
         Optional<Item> optionalItem = itemDao.findById(itemId);
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);

@@ -51,6 +51,16 @@ public class ItemController {
                 .build();
     }
     
+    @GET
+    @UnitOfWork
+    @Path("/search")
+    public Response search(@QueryParam(value = "param") String param) throws GroceryException{
+        ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        List<Item> items = itemService.searchItem(param);
+        return responseBuilder.entity(items)
+                .build();
+    }
+    
     @POST
     @UnitOfWork
     @Path("/create-item")
