@@ -57,7 +57,6 @@ public class UserService {
         Optional<User> user = userDao.findById(userId);
         if (!user.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_USER);
         user.get().setEmail(userProfile.getEmail());
-        user.get().setEmail(userProfile.getEmail());
         user.get().setFirstName(userProfile.getFirstName());
         user.get().setLastName(userProfile.getLastName());
         userDao.update(user.get());

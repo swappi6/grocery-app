@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class GroceryException extends Throwable{
     private int code;
-    private GroceryError error;
+    private Object error;
     
     public GroceryException() {
         this(500);
@@ -13,10 +13,10 @@ public class GroceryException extends Throwable{
     public GroceryException(int code) {
         this(code,GroceryErrors.UNKNOWN_ERRROR, null);
     }
-    public GroceryException(int code, GroceryError error) {
+    public GroceryException(int code, Object error) {
         this(code, error, null);
     }
-    public GroceryException(int code, GroceryError error, Throwable throwable) {
+    public GroceryException(int code, Object error, Throwable throwable) {
         super(throwable);
         this.error = error;
         this.code = code;

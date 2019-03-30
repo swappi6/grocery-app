@@ -6,4 +6,11 @@
     <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>Utility</artifactId>
+  <dependencies>
+  	<dependency>
+    	<groupId>com.amazonaws</groupId>
+    	<artifactId>aws-java-sdk</artifactId>
+    	<version>1.11.327</version>
+  	</dependency>
+  </dependencies>
 </project>

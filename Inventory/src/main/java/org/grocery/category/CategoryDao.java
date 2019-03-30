@@ -33,6 +33,10 @@ public class CategoryDao extends AbstractDAO<Category> {
     public Category update(Category category) {
         return persist(category);
     }
+    
+    public void delete(Category category) {
+         currentSession().delete(category);
+    }
 
     public List<Category> findAll() {
         return list(namedQuery("Category.findAll"));
@@ -42,7 +46,7 @@ public class CategoryDao extends AbstractDAO<Category> {
         return list(namedQuery("Category.findParentCategories"));
     }
     
-    public List<Category> findByCategory(String parent) {
+    public List<Category> findByCategory(Long parent) {
         return list(namedQuery("Category.findByCategory")
                 .setParameter("parent", parent));
     }

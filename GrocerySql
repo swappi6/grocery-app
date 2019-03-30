@@ -59,6 +59,19 @@ key `idx_name` (`name`),
 key `idx_parent` (`parent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE 'offers' (
+'id' int(22) NOT NULL AUTO_INCREMENT,
+'name' varchar(128) NOT NULL,
+'type' varchar(22) NOT NULL,
+'expiry_date' date NOT NULL,
+'image_url' varchar(128),
+'state' bool DEFAULT '0',
+'min_amount' int DEFAULT '0',
+'value' int NOT NULL,
+'desc' varchar(128),
+primary key ('id'),
+);
+
 
 INSERT INTO categories (id, name, description, parent, image_url)
 VALUES (1, "milk", "cow milk", "dairy", "/milk");

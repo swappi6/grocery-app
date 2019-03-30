@@ -1,12 +1,21 @@
 package org.grocery.item;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import org.grocery.category.Category;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +35,17 @@ import lombok.ToString;
         @NamedQuery(
                 name = "Item.findByCategory",
                 query = "SELECT m FROM Item m "
-                        + "where m.parent = :parent"
+                        + "where m.category.id = :category"
+        ),
+        @NamedQuery(
+                name = "Item.searchByName",
+                query = "SELECT m FROM Item m "
+                        + "where m.name like :name"
+        ),
+        @NamedQuery(
+                name = "Item.searchByDescription",
+                query = "SELECT m FROM Item m "
+                        + "where m.description like :description"
         )
     }
 )
@@ -34,6 +53,7 @@ public class Item {
     
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(name = "name", nullable = false)
@@ -41,9 +61,6 @@ public class Item {
     
     @Column(name = "description", nullable = true)
     private String description;
-
-    @Column(name = "parent", nullable = true)
-    private String parent;
     
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
@@ -59,8 +76,17 @@ public class Item {
     
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
+    
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name= "category_id")
+    private Category category;
 
     public Item() {
+    }
+    
+    public Item(Long id) {
+        this.id = id;
     }
     
     public Item(Long id, String name, String description, String imageUrl) {

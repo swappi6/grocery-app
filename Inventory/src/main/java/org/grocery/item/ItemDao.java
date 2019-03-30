@@ -3,6 +3,7 @@ package org.grocery.item;
 import java.util.List;
 import java.util.Optional;
 
+import org.grocery.category.Category;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -25,21 +26,35 @@ public class ItemDao extends AbstractDAO<Item> {
         return Optional.ofNullable(get(id));
     }
 
-    public Item create(Item category) {
-        return persist(category);
+    public Item create(Item item) {
+        return persist(item);
     }
     
-    public Item update(Item category) {
-        return persist(category);
+    public Item update(Item item) {
+        return persist(item);
     }
+    
+    public void delete(Item item) {
+        currentSession().delete(item);
+   }
 
     public List<Item> findAll() {
         return list(namedQuery("Item.findAll"));
     }
     
-    public List<Item> findByCategory(String parent) {
-        return (List<Item>) namedQuery("Item.findByCategory")
-                .setParameter("parent", parent);
+    public List<Item> findByCategory(Long parent) {
+        return list(namedQuery("Item.findByCategory")
+                .setParameter("category", parent));
+    }
+    
+    public List<Item> searchByName(String searchKeyword) {
+        return list(namedQuery("Item.searchByName")
+                .setParameter("name", "%"+searchKeyword+"%"));
+    }
+    
+    public List<Item> searchByDescription(String searchKeyword) {
+        return list(namedQuery("Item.searchByDescription")
+                .setParameter("description", "%"+searchKeyword+"%"));
     }
 
 }
