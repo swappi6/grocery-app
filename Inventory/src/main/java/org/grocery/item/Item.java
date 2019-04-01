@@ -77,8 +77,8 @@ public class Item {
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
     
-    @JsonBackReference
-    @ManyToOne
+    //@JsonBackReference
+    @ManyToOne()
     @JoinColumn(name= "category_id")
     private Category category;
 
