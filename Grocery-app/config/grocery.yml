@@ -25,7 +25,7 @@ database:
 
 redis:
   #hostname: cab-info-new.olacabs-dev.in
-  hostname: 127.0.0.1
+  hostname:  127.0.0.1
   port: 6379
   max_total: 100
   max_idle: 500

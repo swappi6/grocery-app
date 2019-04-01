@@ -29,6 +29,11 @@
 	</dependency>
 	<dependency>
 		<groupId>org.grocery</groupId>
+		<artifactId>Offers</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.grocery</groupId>
 		<artifactId>Admin</artifactId>
 		<version>${project.version}</version>
 	</dependency>

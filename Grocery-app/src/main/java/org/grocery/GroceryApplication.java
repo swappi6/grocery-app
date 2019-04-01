@@ -11,6 +11,8 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
 import org.grocery.Auth.AuthTokenDao;
+import org.grocery.Offers.Offer;
+import org.grocery.Offers.OfferDao;
 import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
@@ -40,7 +42,8 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         new GroceryApplication().run(args);
     }
     
-    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class) {
+
+    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class) {
         public DataSourceFactory getDataSourceFactory(GroceryConfiguration configuration) {
             return configuration.getDataSourceFactory();
         }
@@ -87,6 +90,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));
         env.jersey().register(new CategoryDao(hibernate.getSessionFactory()));
         env.jersey().register(new ItemDao(hibernate.getSessionFactory()));
+        env.jersey().register(new OfferDao(hibernate.getSessionFactory()));
         env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         final FilterRegistration.Dynamic cors =
