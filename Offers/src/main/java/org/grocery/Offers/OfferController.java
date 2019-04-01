@@ -39,7 +39,7 @@ public class OfferController {
 	public Response getAllValid()
 	{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-		List<Offer> offers = offerService.getValid();
+		List<Offer> offers = offerService.getValidOffers();
 		 
 		return responseBuilder.entity(offers)
 	                .build();
