@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
+import org.grocery.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,8 +57,10 @@ public class ItemController {
     @Path("/search")
     public Response search(@QueryParam(value = "param") String param) throws GroceryException{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        SearchResponse response = new SearchResponse();
         List<Item> items = itemService.searchItem(param);
-        return responseBuilder.entity(items)
+        response.setItems(items);
+        return responseBuilder.entity(response)
                 .build();
     }
     
