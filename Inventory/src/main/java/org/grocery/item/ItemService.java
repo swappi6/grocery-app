@@ -44,6 +44,7 @@ public class ItemService {
         item.setDescription(itemData.getDescription());
         item.setPrice(itemData.getPrice());
         item.setDiscountedPrice(itemData.getDiscountedPrice());
+        item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);
@@ -74,6 +75,8 @@ public class ItemService {
             item.setPrice(itemData.getPrice());
         if (itemData.getDiscountedPrice() != null)
             item.setDiscountedPrice(itemData.getDiscountedPrice());
+        if (itemData.getSubscribable())
+            item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);

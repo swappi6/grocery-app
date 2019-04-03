@@ -18,5 +18,5 @@ public class ItemData {
     @NotNull
     private Double price;
     private String discountedPrice;
-
+    private Boolean subscribable;
 }
