@@ -1,7 +1,5 @@
 package org.grocery.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.ws.rs.core.Response;
@@ -12,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -37,7 +37,7 @@ public class S3FileStorage implements FileStore{
         }
         catch(Exception e) {
             e.printStackTrace();
-            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.INVALID_REFRESH_TOKEN);
+            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_UPLOAD_ERROR);
         }
     }
     
@@ -45,6 +45,21 @@ public class S3FileStorage implements FileStore{
         String url = s3Url;
         return url.replace("{bucket}", bucketName)
         .replace("{fileName}", fileName);
+    }
+    
+    public void delete(String fileName, String bucketName) throws GroceryException {
+        try {
+            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new ProfileCredentialsProvider())
+                    .withRegion(clientRegion)
+                    .build();
+
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_DELETE_ERROR);
+        }
     }
 
 }

@@ -34,8 +34,12 @@ public class ItemService {
         return itemDao.findByCategory(parent);
     }
     
-    public void delete(Long id){
-        itemDao.delete(new Item(id));
+    public void delete(Long id) throws GroceryException{
+        Optional<Item> optionalItem = itemDao.findById(id);
+        if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
+        Item item = optionalItem.get();
+        store.delete(item.getName(), Constants.Buckets.ITEM); 
+        itemDao.delete(item);
     }
     
     public void createItem(ItemData itemData) throws GroceryException{

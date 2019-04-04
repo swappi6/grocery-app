@@ -1,7 +1,6 @@
 package org.grocery.category;
 
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +37,12 @@ public class CategoryService {
         return categoryDao.findByCategory(parent);
     }
     
-    public void delete(Long id){
-        categoryDao.delete(new Category(id));
+    public void delete(Long id) throws GroceryException{
+        Optional<Category> optionalCategory = categoryDao.findById(id);
+        if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
+        Category category = optionalCategory.get();
+        store.delete(category.getName(), Constants.Buckets.CATEGORY); 
+        categoryDao.delete(category);
     }
     
     public void updateCategory(CategoryData categoryData, Long categoryId) throws GroceryException{
@@ -52,7 +55,7 @@ public class CategoryService {
             category.setDescription(categoryData.getDescription());
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.ITEM, inputStream);
+            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
             category.setImageUrl(imageUrl);
         }
         if (categoryData.getParent() != null) {
