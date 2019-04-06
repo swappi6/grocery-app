@@ -1,7 +1,6 @@
 package org.grocery.category;
 
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,21 +37,28 @@ public class CategoryService {
         return categoryDao.findByCategory(parent);
     }
     
-    public void delete(Long id){
-        categoryDao.delete(new Category(id));
+    public void delete(Long id) throws GroceryException{
+        Optional<Category> optionalCategory = categoryDao.findById(id);
+        if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
+        Category category = optionalCategory.get();
+        store.delete(category.getName(), Constants.Buckets.CATEGORY); 
+        categoryDao.delete(category);
     }
     
     public void updateCategory(CategoryData categoryData, Long categoryId) throws GroceryException{
         Optional<Category> optionalCategory = categoryDao.findById(categoryId);
         if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
         Category category = optionalCategory.get();
-        if (categoryData.getName() != null)
+        if (categoryData.getName() != null) {
+            String imageUrl = store.rename(category.getName(), Constants.Buckets.CATEGORY, categoryData.getName());
             category.setName(categoryData.getName());
+            category.setImageUrl(imageUrl);
+        }
         if (categoryData.getDescription() != null)
             category.setDescription(categoryData.getDescription());
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.ITEM, inputStream);
+            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
             category.setImageUrl(imageUrl);
         }
         if (categoryData.getParent() != null) {
@@ -67,7 +73,8 @@ public class CategoryService {
         Category cat = new Category();
         cat.setName(categoryData.getName());
         cat.setDescription(categoryData.getDescription());
-        cat.setParent(new Category(categoryData.getParent()));
+        if(categoryData.getParent() != null)
+        	cat.setParent(new Category(categoryData.getParent()));
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
@@ -80,4 +87,5 @@ public class CategoryService {
         }
                 
     }
+    
 }

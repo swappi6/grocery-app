@@ -34,8 +34,12 @@ public class ItemService {
         return itemDao.findByCategory(parent);
     }
     
-    public void delete(Long id){
-        itemDao.delete(new Item(id));
+    public void delete(Long id) throws GroceryException{
+        Optional<Item> optionalItem = itemDao.findById(id);
+        if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
+        Item item = optionalItem.get();
+        store.delete(item.getName(), Constants.Buckets.ITEM); 
+        itemDao.delete(item);
     }
     
     public void createItem(ItemData itemData) throws GroceryException{
@@ -44,6 +48,7 @@ public class ItemService {
         item.setDescription(itemData.getDescription());
         item.setPrice(itemData.getPrice());
         item.setDiscountedPrice(itemData.getDiscountedPrice());
+        item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);
@@ -66,14 +71,19 @@ public class ItemService {
         Optional<Item> optionalItem = itemDao.findById(itemId);
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
         Item item = optionalItem.get();
-        if (itemData.getName() != null)
+        if (itemData.getName() != null) {
+            String imageUrl = store.rename(item.getName(), Constants.Buckets.ITEM, itemData.getName());
             item.setName(itemData.getName());
+            item.setImageUrl(imageUrl);
+        }
         if (itemData.getDescription() != null)
             item.setDescription(itemData.getDescription());
         if (itemData.getPrice() != null)
             item.setPrice(itemData.getPrice());
         if (itemData.getDiscountedPrice() != null)
             item.setDiscountedPrice(itemData.getDiscountedPrice());
+        if (itemData.getSubscribable())
+            item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);

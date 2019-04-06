@@ -43,7 +43,7 @@ import lombok.ToString;
 public class Offer {
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
-private long id;
+private Long id;
 
 @Column(name = "name", nullable = false)
 private String name;
@@ -70,6 +70,13 @@ private int value;
 @Column(name= "description",nullable = false)
 private String description;
 
+public Offer() {
+	
+}
+
+public Offer(Long id) {
+    this.id = id;
+}
 }
 
 

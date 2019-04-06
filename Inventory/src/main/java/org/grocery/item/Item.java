@@ -77,10 +77,12 @@ public class Item {
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
     
-    @JsonBackReference
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name= "category_id")
     private Category category;
+    
+    @Column(name= "subscribable",nullable = false)
+    private Boolean subscribable;
 
     public Item() {
     }

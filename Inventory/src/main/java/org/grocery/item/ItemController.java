@@ -17,6 +17,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
+import org.grocery.category.Category;
+import org.grocery.category.CategoryService;
+import org.grocery.response.CategoryItems;
+import org.grocery.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,13 +35,20 @@ public class ItemController {
     @Autowired
     ItemService itemService;
     
+    @Autowired
+    CategoryService categoryService;
+    
     @GET
     @UnitOfWork
     @Path("/category-items")
     public Response getCategoryItems(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        CategoryItems response = new CategoryItems();
         List<Item> items = itemService.findByCategory(parent);
-        return responseBuilder.entity(items)
+        List<Category> subCategories =categoryService.findByCategory(parent);
+        response.setItems(items);
+        response.setSubCategories(subCategories);
+        return responseBuilder.entity(response)
                 .build();
     }
     
@@ -56,8 +67,10 @@ public class ItemController {
     @Path("/search")
     public Response search(@QueryParam(value = "param") String param) throws GroceryException{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        SearchResponse response = new SearchResponse();
         List<Item> items = itemService.searchItem(param);
-        return responseBuilder.entity(items)
+        response.setItems(items);
+        return responseBuilder.entity(response)
                 .build();
     }
     

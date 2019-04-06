@@ -31,8 +31,7 @@ public class OfferService {
 	        return offers;
 	    }
 	
-	  
-	 public List<Offer> getValid() {
+	 public List<Offer> getValidOffers() {
 		 long millis=System.currentTimeMillis();
 		 Date date = new Date(millis);
          return offerDao.findAllValid(date);

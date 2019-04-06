@@ -31,6 +31,14 @@ public class OfferDao extends AbstractDAO<Offer> {
         return persist(offer);
     }
     
+    public Offer update(Offer offer) {
+    	return persist(offer);
+    }
+    
+    public void delete(Offer offer) {
+        currentSession().delete(offer);
+   }
+    
     public List<Offer> findAll() {
         return list(namedQuery("Offer.findAll"));
     }

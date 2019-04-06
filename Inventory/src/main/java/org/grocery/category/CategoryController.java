@@ -66,9 +66,9 @@ public class CategoryController {
     @UnitOfWork
     @Path("/create-category")
     public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
-        ResponseBuilder responseBuilder = Response.noContent();
-        categoryService.createCategory(categoryData);
-        return responseBuilder.build();
+    	 ResponseBuilder responseBuilder = Response.noContent();
+         categoryService.createCategory(categoryData);
+         return responseBuilder.build();
     }
     
     @PUT
