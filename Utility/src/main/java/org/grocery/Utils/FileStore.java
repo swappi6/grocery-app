@@ -10,6 +10,6 @@ public interface FileStore {
     
     public void delete (String fileName, String bucketName) throws GroceryException;
     
-    public void rename(String oldFileName, String bucketName, String newFileName) throws GroceryException;
+    public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException;
 
 }

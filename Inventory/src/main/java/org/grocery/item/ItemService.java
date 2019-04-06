@@ -72,8 +72,9 @@ public class ItemService {
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
         Item item = optionalItem.get();
         if (itemData.getName() != null) {
-            store.rename(item.getName(), Constants.Buckets.ITEM, itemData.getName());
+            String imageUrl = store.rename(item.getName(), Constants.Buckets.ITEM, itemData.getName());
             item.setName(itemData.getName());
+            item.setImageUrl(imageUrl);
         }
         if (itemData.getDescription() != null)
             item.setDescription(itemData.getDescription());

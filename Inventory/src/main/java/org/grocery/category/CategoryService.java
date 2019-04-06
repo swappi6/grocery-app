@@ -50,8 +50,9 @@ public class CategoryService {
         if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
         Category category = optionalCategory.get();
         if (categoryData.getName() != null) {
-            store.rename(category.getName(), Constants.Buckets.CATEGORY, categoryData.getName());
+            String imageUrl = store.rename(category.getName(), Constants.Buckets.CATEGORY, categoryData.getName());
             category.setName(categoryData.getName());
+            category.setImageUrl(imageUrl);
         }
         if (categoryData.getDescription() != null)
             category.setDescription(categoryData.getDescription());
