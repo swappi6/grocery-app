@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CopyObjectRequest;
@@ -26,6 +25,7 @@ public class S3FileStorage implements FileStore{
     private static final String s3Url = "https://s3.ap-south-1.amazonaws.com/{bucket}/{fileName}";
 
     public String upload(String fileName, String bucketName, InputStream inputStream) throws GroceryException{
+        fileName = getEncodedString(fileName);
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
@@ -49,6 +49,7 @@ public class S3FileStorage implements FileStore{
     }
     
     public void delete(String fileName, String bucketName) throws GroceryException {
+        fileName = getEncodedString(fileName);
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
@@ -64,6 +65,8 @@ public class S3FileStorage implements FileStore{
     }
     
     public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException {
+        oldFileName = getEncodedString(oldFileName);
+        newFileName = getEncodedString(newFileName);
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
@@ -82,6 +85,10 @@ public class S3FileStorage implements FileStore{
             e.printStackTrace();
             throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_DELETE_ERROR);
         }
+    }
+    
+    private String getEncodedString(String inputString) {
+        return inputString.replaceAll(" ", "-");
     }
 
 }
