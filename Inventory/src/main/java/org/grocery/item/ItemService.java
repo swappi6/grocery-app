@@ -82,11 +82,11 @@ public class ItemService {
             item.setPrice(itemData.getPrice());
         if (itemData.getDiscountedPrice() != null)
             item.setDiscountedPrice(itemData.getDiscountedPrice());
-        if (itemData.getSubscribable())
+        if (itemData.getSubscribable() != null)
             item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);
+            String imageUrl = store.upload(item.getName(), Constants.Buckets.ITEM, inputStream);
             item.setImageUrl(imageUrl);
         }
         if (itemData.getParent() != null) {
