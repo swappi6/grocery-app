@@ -43,9 +43,10 @@ public class OfferService {
 	        offer.setType(offerData.getType());
 	        offer.setExpiryDate(offerData.getExpiryDate());
 	        offer.setActive(offerData.getActive());
-	        offer.setMinAmount(offer.getMinAmount());
+	        System.out.println(offerData.getMinAmount());
+	        offer.setMinAmount(offerData.getMinAmount());
 	        offer.setValue(offerData.getValue());
-	        offer.setDescription(offer.getDescription());
+	        offer.setDescription(offerData.getDescription());
 	        InputStream inputStream =encodedStringHelper. getInputStream(offerData.getEncodedImage());
 	        if (inputStream != null) {
 	            String imageUrl = store.upload(offerData.getName(), Constants.Buckets.OFFER, inputStream);

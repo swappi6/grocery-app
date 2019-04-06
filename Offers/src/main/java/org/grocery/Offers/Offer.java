@@ -62,10 +62,10 @@ private String imageUrl;
 private Boolean active;
 
 @Column(name= "min_amount",nullable = false)
-private int minAmount;
+private Integer minAmount;
 
 @Column(name= "value",nullable = false)
-private int value;
+private Integer value;
 
 @Column(name= "description",nullable = false)
 private String description;
