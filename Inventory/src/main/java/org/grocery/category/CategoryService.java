@@ -58,7 +58,7 @@ public class CategoryService {
             category.setDescription(categoryData.getDescription());
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
+            String imageUrl = store.upload(category.getName(), Constants.Buckets.CATEGORY, inputStream);
             category.setImageUrl(imageUrl);
         }
         if (categoryData.getParent() != null) {

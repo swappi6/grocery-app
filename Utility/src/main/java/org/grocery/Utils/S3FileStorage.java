@@ -51,7 +51,7 @@ public class S3FileStorage implements FileStore{
     public void delete(String fileName, String bucketName) throws GroceryException {
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(new ProfileCredentialsProvider())
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .withRegion(clientRegion)
                     .build();
 
@@ -66,7 +66,7 @@ public class S3FileStorage implements FileStore{
     public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException {
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(new ProfileCredentialsProvider())
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .withRegion(clientRegion)
                     .build();
             CopyObjectRequest copyRequest = new CopyObjectRequest(bucketName, oldFileName, bucketName, newFileName);
