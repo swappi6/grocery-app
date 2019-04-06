@@ -49,8 +49,10 @@ public class CategoryService {
         Optional<Category> optionalCategory = categoryDao.findById(categoryId);
         if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
         Category category = optionalCategory.get();
-        if (categoryData.getName() != null)
+        if (categoryData.getName() != null) {
+            store.rename(category.getName(), Constants.Buckets.CATEGORY, categoryData.getName());
             category.setName(categoryData.getName());
+        }
         if (categoryData.getDescription() != null)
             category.setDescription(categoryData.getDescription());
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
@@ -84,4 +86,5 @@ public class CategoryService {
         }
                 
     }
+    
 }

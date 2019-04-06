@@ -71,8 +71,10 @@ public class ItemService {
         Optional<Item> optionalItem = itemDao.findById(itemId);
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
         Item item = optionalItem.get();
-        if (itemData.getName() != null)
+        if (itemData.getName() != null) {
+            store.rename(item.getName(), Constants.Buckets.ITEM, itemData.getName());
             item.setName(itemData.getName());
+        }
         if (itemData.getDescription() != null)
             item.setDescription(itemData.getDescription());
         if (itemData.getPrice() != null)
