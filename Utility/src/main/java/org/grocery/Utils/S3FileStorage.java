@@ -13,6 +13,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CopyObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -55,6 +56,27 @@ public class S3FileStorage implements FileStore{
                     .build();
 
             s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_DELETE_ERROR);
+        }
+    }
+    
+    public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException {
+        try {
+            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new ProfileCredentialsProvider())
+                    .withRegion(clientRegion)
+                    .build();
+            CopyObjectRequest copyRequest = new CopyObjectRequest(bucketName, oldFileName, bucketName, newFileName);
+            s3Client.copyObject(copyRequest);
+                          
+              //Delete the original
+            DeleteObjectRequest deleteRequest = new DeleteObjectRequest(bucketName, oldFileName);
+            s3Client.deleteObject(deleteRequest);
+            return gets3Url(bucketName, newFileName);
+
         }
         catch(Exception e) {
             e.printStackTrace();
