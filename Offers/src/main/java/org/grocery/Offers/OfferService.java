@@ -63,8 +63,11 @@ public class OfferService {
 	        Optional<Offer> optionalOffer = offerDao.findById(offerId);
 	        if (!optionalOffer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
 	        Offer offer = optionalOffer.get();
-	        if (offerData.getName() != null)
+	        if (offerData.getName() != null) {
+	            String imageUrl = store.rename(offer.getName(), Constants.Buckets.OFFER, offerData.getName());
 	            offer.setName(offerData.getName());
+	            offer.setImageUrl(imageUrl);
+	        }
 	        if (offerData.getType() != null)
 	            offer.setType(offerData.getType());
 	        if (offerData.getExpiryDate() != null)
