@@ -36,6 +36,7 @@ public class ItemDao extends AbstractDAO<Item> {
     
     public void delete(Item item) {
         currentSession().delete(item);
+        currentSession().flush();
    }
 
     public List<Item> findAll() {

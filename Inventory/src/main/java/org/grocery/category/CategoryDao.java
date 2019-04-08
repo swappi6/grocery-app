@@ -36,6 +36,7 @@ public class CategoryDao extends AbstractDAO<Category> {
     
     public void delete(Category category) {
          currentSession().delete(category);
+         currentSession().flush();
     }
 
     public List<Category> findAll() {
