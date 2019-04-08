@@ -40,9 +40,13 @@ public class CategoryService {
     public void delete(Long id) throws GroceryException{
         Optional<Category> optionalCategory = categoryDao.findById(id);
         if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
-        Category category = optionalCategory.get();
-        store.delete(category.getName(), Constants.Buckets.CATEGORY); 
-        categoryDao.delete(category);
+        Category category = optionalCategory.get();        
+        try {
+        	categoryDao.delete(category);
+        	store.delete(category.getName(), Constants.Buckets.CATEGORY); 
+        } catch (ConstraintViolationException e) {
+            throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(), new Object[]{e.getCause().getMessage()});
+        }
     }
     
     public void updateCategory(CategoryData categoryData, Long categoryId) throws GroceryException{

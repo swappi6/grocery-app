@@ -37,7 +37,7 @@ public class UserController {
     @UnitOfWork
     @Path("/hello/{name}")
     public Response sample( @PathParam(value = "name") String name) {
-        return Response.ok(name +" ki ki chuut").build();
+        return Response.ok(name +"  is a good boy").build();
     }
     
     @POST
