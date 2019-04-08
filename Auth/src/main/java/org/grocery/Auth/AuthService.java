@@ -24,7 +24,7 @@ public class AuthService {
         AuthTokens tokens = new AuthTokens();
         AuthToken auth = authDao.findByRefreshToken(refreshToken);
         if (null == auth) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_REFRESH_TOKEN);
-        String accessToken = rand.generateAuthToken();
+        String accessToken = rand.generateUUID();
         auth.setAccessToken(accessToken);
         Long currentTime = System.currentTimeMillis();
         auth.setAccessTokenExpiry(currentTime + accessExpiry);
@@ -35,8 +35,8 @@ public class AuthService {
     
     public AuthTokens updateRefreshAndAccessToken(Long userId, String deviceId) {
         AuthTokens tokens = new AuthTokens();
-        String accessToken = rand.generateAuthToken();
-        String refreshToken = rand.generateAuthToken();
+        String accessToken = rand.generateUUID();
+        String refreshToken = rand.generateUUID();
         Long currentTime = System.currentTimeMillis();
         AuthToken auth = authDao.findByUserAndDeviceId(userId, deviceId);
         if (null == auth) {

@@ -19,7 +19,7 @@ public class RandomGeneratorImpl implements RandomGenerator{
         return id;
     }
 
-    public String generateAuthToken() {
+    public String generateUUID() {
         String auth = UUID.randomUUID().toString();
         return auth;
     }

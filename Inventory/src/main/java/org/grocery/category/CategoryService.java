@@ -43,7 +43,7 @@ public class CategoryService {
         Category category = optionalCategory.get();        
         try {
         	categoryDao.delete(category);
-        	store.delete(category.getName(), Constants.Buckets.CATEGORY); 
+        	store.delete(Constants.Buckets.CATEGORY, category.getImageUrl()); 
         } catch (ConstraintViolationException e) {
             throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(), new Object[]{e.getCause().getMessage()});
         }
@@ -54,15 +54,13 @@ public class CategoryService {
         if (!optionalCategory.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
         Category category = optionalCategory.get();
         if (categoryData.getName() != null) {
-            String imageUrl = store.rename(category.getName(), Constants.Buckets.CATEGORY, categoryData.getName());
             category.setName(categoryData.getName());
-            category.setImageUrl(imageUrl);
         }
         if (categoryData.getDescription() != null)
             category.setDescription(categoryData.getDescription());
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(category.getName(), Constants.Buckets.CATEGORY, inputStream);
+            String imageUrl = store.upload(Constants.Buckets.CATEGORY, inputStream);
             category.setImageUrl(imageUrl);
         }
         if (categoryData.getParent() != null) {
@@ -81,7 +79,7 @@ public class CategoryService {
         	cat.setParent(new Category(categoryData.getParent()));
         InputStream inputStream =encodedStringHelper. getInputStream(categoryData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(categoryData.getName(), Constants.Buckets.CATEGORY, inputStream);
+            String imageUrl = store.upload(Constants.Buckets.CATEGORY, inputStream);
             cat.setImageUrl(imageUrl);
         }
         try {
