@@ -1,5 +1,8 @@
 package org.grocery.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -32,12 +35,69 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+    private Map<Integer, String> gaali = new HashMap();
+    private Map<Integer, String> house = new HashMap();
+    private Map<Integer, String> potter = new HashMap();
+    private Map<Integer, String> pandav = new HashMap();
+    
     
     @GET
     @UnitOfWork
     @Path("/hello/{name}")
     public Response sample( @PathParam(value = "name") String name) {
-        return Response.ok(name +" ki ki chuut").build();
+    	String responseString = null;
+//    	gaali.put(0, "studd");
+//    	gaali.put(1, "madar chod");
+//    	gaali.put(2, "bahin chod");
+//    	gaali.put(3, "gone case");
+//    	gaali.put(4, "bhosdi waal");
+//    	gaali.put(5, "boka choda");
+//    	gaali.put(6, "good boy");
+//    	gaali.put(7, "bak lund");
+    	house.put(1, "Stark");
+    	house.put(2, "Targeryen");
+    	house.put(3, "Martell");
+    	house.put(4, "Lannister");
+    	house.put(5, "Tyrell");
+    	house.put(6, "Wights");
+    	house.put(7, "Northerner");
+    	house.put(8, "Nights Watcher");
+    	house.put(9, "Children of Forest");
+    	house.put(10, "Second sons");
+    	house.put(11, "Unsullied");
+    	house.put(0, "Iron Born");
+    	
+    	potter.put(0, "Gryffindor");
+    	potter.put(1, "Slytherin");
+    	potter.put(2, "Ravenclaw");
+    	potter.put(3, "Huffle puff");
+    	
+    	pandav.put(0, "Yudhisthir");
+    	pandav.put(1, "Bhim");
+    	pandav.put(2, "Arjun");
+    	pandav.put(3, "Nakul");
+    	pandav.put(4, "Sahdev");
+    	pandav.put(5, "Shakuni");
+    	pandav.put(6, "Duryodhan");
+    	pandav.put(7, "Karn");
+    	pandav.put(8, "Duhshashan");
+    	
+    	int hash = getHash(name);
+    	int mod = hash%9;
+    	if (mod <0)
+    		mod= mod*-1;
+    	responseString = pandav.get(mod);
+    	if (name == "shashi")
+    		responseString = "studd";
+        return Response.ok(name +" You are a "+ responseString).build();
+    }
+    
+    private int getHash(String name) {
+    	int sum =0;
+    	for (int i = 0; i< name.length(); i++) {
+    		sum += name.charAt(i);
+    	}
+    	return sum;
     }
     
     @POST
