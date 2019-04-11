@@ -19,4 +19,5 @@ public class ItemData {
     private Double price;
     private String discountedPrice;
     private Boolean subscribable;
+    private String availability;
 }

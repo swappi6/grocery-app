@@ -68,7 +68,7 @@ public class Item {
     @Column(name = "price", nullable = true)
     private Double price;
     
-    @Column(name = "discounted_price", nullable = true)
+    @Column(name = "discountedPrice", nullable = true)
     private String discountedPrice;
     
     @Column(name = "created_at", nullable = true)
