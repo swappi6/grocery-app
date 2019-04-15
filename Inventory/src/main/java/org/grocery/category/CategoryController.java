@@ -16,7 +16,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.grocery.Auth.Auth;
 import org.grocery.Error.GroceryException;
+import org.grocery.admin.filter.AdminAuth;
+import org.grocery.admin.filter.ReadAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +57,7 @@ public class CategoryController {
     
     @GET
     @UnitOfWork
+    @ReadAuth
     @Path("/sub-category")
     public Response getSubCategories(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();

@@ -4,13 +4,13 @@ import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
+import org.grocery.Auth.AuthService;
+import org.grocery.Auth.AuthTokens;
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
 import org.grocery.Utils.CacheService;
-import org.grocery.Utils.RandomGeneratorImpl;
+import org.grocery.Utils.RandomGenerator;
 import org.grocery.Utils.SmsService;
-import org.grocery.Auth.AuthService;
-import org.grocery.Auth.AuthTokens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class UserService {
     
     @Autowired
-    RandomGeneratorImpl randomGeneratorImpl;
+    RandomGenerator randomGenerator;
     @Autowired
     SmsService smsService;
     @Autowired
@@ -31,7 +31,7 @@ public class UserService {
     AuthService authService;
     
     public void sendOtp(String mobileNo) {
-        String otp = randomGeneratorImpl.generateOtp();
+        String otp = randomGenerator.generateOtp();
         System.out.println(otp);
         cacheService.setValueWithExpiry(mobileNo, otp, expiry);
         String message = staticMessage.replace("<OTP>", otp);

@@ -12,5 +12,15 @@
 		<artifactId>Utility</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>org.grocery</groupId>
+		<artifactId>Admin</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.grocery</groupId>
+		<artifactId>Auth</artifactId>
+		<version>${project.version}</version>
+	</dependency>
   </dependencies>
 </project>

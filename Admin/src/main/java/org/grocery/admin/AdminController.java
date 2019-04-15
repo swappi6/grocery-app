@@ -41,9 +41,20 @@ public class AdminController {
     public Response getUserProfile(@Valid LoginProfile loginDetails) 
             throws GroceryException {
        ResponseBuilder responseBuilder = Response.ok(); 
-       AdminProfile adminProfile = adminService.getUser(loginDetails);
+       AdminProfile adminProfile = adminService.login(loginDetails);
        return responseBuilder.entity(adminProfile)
     		   .build();
+    }
+	
+	@POST
+    @UnitOfWork
+    @Path("/logout")
+    public Response logout(@Valid LoginProfile loginDetails) 
+            throws GroceryException {
+       ResponseBuilder responseBuilder = Response.ok(); 
+       adminService.logout("avjhjvh");
+       return responseBuilder
+               .build();
     }
     
 	
