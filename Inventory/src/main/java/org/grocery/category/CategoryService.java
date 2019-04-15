@@ -63,7 +63,10 @@ public class CategoryService {
             String imageUrl = store.upload(Constants.Buckets.CATEGORY, inputStream);
             category.setImageUrl(imageUrl);
         }
-        if (categoryData.getParent() != null) {
+        if(categoryData.getParent() == -1) {
+        	category.setParent(null);
+        }
+        else if (categoryData.getParent() != null) {
             Category cat = new Category();
             cat.setId(categoryData.getParent());
             category.setParent(cat);
