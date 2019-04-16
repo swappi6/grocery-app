@@ -6,6 +6,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.StringUtils;
 import org.grocery.Error.GroceryException;
@@ -13,9 +14,8 @@ import org.grocery.Utils.CacheService;
 import org.grocery.admin.AdminService;
 import org.grocery.admin.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
+@Provider
 @ReadAuth
 public class ReadAuthFilter implements ContainerRequestFilter {
  

@@ -76,6 +76,9 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
             System.out.println(entry.getValue());
             env.jersey().register(entry.getValue());
         }
+        env.jersey().register(AdminAuthFilter.class);
+        env.jersey().register(ReadAuthFilter.class);
+      	env.jersey().register(WriteAuthFilter.class);
     }
     
     @Override
@@ -88,9 +91,6 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         JedisPool jedisPool = initializeRedis(config);
         env.jersey().register(new GroceryExceptionMapper());
         env.jersey().register(AuthFilter.class);
-        env.jersey().register(AdminAuthFilter.class);
-        env.jersey().register(ReadAuthFilter.class);
-        env.jersey().register(WriteAuthFilter.class);
         env.jersey().register(new RedisService(jedisPool));
         env.jersey().register(new UserDao(hibernate.getSessionFactory()));
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));
@@ -99,6 +99,9 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new OfferDao(hibernate.getSessionFactory()));
         env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
+//        env.jersey().register(AdminAuthFilter.class);
+//        env.jersey().register(ReadAuthFilter.class);
+//        env.jersey().register(WriteAuthFilter.class);
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);
         cors.setInitParameter("allowedOrigins", "*");

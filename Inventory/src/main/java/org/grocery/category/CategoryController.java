@@ -16,9 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.grocery.Auth.Auth;
 import org.grocery.Error.GroceryException;
-import org.grocery.admin.filter.AdminAuth;
 import org.grocery.admin.filter.ReadAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
