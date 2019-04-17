@@ -162,5 +162,7 @@
   	<module>Inventory</module>
   	<module>Utility</module>
   	<module>Grocery-app</module>
+  	<module>Offers</module>
+  	<module>Admin</module>
   </modules>
 </project>

@@ -3,7 +3,10 @@ package org.grocery.admin;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -22,7 +25,10 @@ public class AdminDao extends AbstractDAO<Admin> {
     }
 
     public Optional<Admin> findById(Long id) {
-        return Optional.ofNullable(get(id));
+        Session session = factory.openSession();
+        Optional<Admin> gyh =  Optional.ofNullable(session.get(Admin.class, id));
+        session.flush();
+        return gyh;
     }
 
     public Admin create(Admin admin) {
