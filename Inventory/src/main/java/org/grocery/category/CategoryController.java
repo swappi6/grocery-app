@@ -55,7 +55,7 @@ public class CategoryController {
     
     @GET
     @UnitOfWork
-    @ReadAuth
+//    @ReadAuth
     @Path("/sub-category")
     public Response getSubCategories(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
