@@ -1,6 +1,7 @@
 package org.grocery.Offers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -11,6 +12,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -33,7 +36,7 @@ public class OfferController {
 	@GET
 	@UnitOfWork
 	@Path("/hello/{name}")
-	 public Response sample( @PathParam(value = "name") String name) {
+	public Response sample( @PathParam(value = "name") String name) {
         return Response.ok(name +" Hello Robin").build();
 	}
 	
@@ -67,24 +70,34 @@ public class OfferController {
 	        ResponseBuilder responseBuilder = Response.noContent();
 	        offerService.createOffer(offerData);
 	        return responseBuilder.build();
-	    }
+	}
 	
-	 @PUT
-	 @UnitOfWork
-	 @Path("/update-offer/{offerId}")
-	    public Response updateOffer(OfferData offerData, @PathParam(value = "offerId") Long offerId) throws GroceryException {
+	@PUT
+	@UnitOfWork
+	@Path("/update-offer/{offerId}")
+	public Response updateOffer(OfferData offerData, @PathParam(value = "offerId") Long offerId) throws GroceryException {
 	        ResponseBuilder responseBuilder = Response.noContent();
 	        offerService.updateOffer(offerData, offerId);
 	        return responseBuilder.build();
-	    }
+	}
 	    
-	 @DELETE
-	 @UnitOfWork
-	 @Path("/delete-offer/{offerId}")
-	    public Response deleteOffer(@PathParam(value = "offerId") Long offerId) throws GroceryException {
+	@DELETE
+	@UnitOfWork
+	@Path("/delete-offer/{offerId}")
+	public Response deleteOffer(@PathParam(value = "offerId") Long offerId) throws GroceryException {
 	        ResponseBuilder responseBuilder = Response.noContent();
 	        offerService.delete(offerId);
 	        return responseBuilder.build();
-	    }
+    }
+	 
+	@GET
+	@UnitOfWork
+	@Path("/get-by-offerId/{offerId}")
+	public Response getById(@PathParam(value = "offerId") Long offerId) throws Exception, GroceryException {
+	        ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+	        OfferData offers = offerService.getOffer(offerId);
+	        return responseBuilder.entity(offers)
+	                .build();
+	}
 	
 }

@@ -19,6 +19,7 @@ public class OfferData {
 	
 	@NotNull
 	private Date expiryDate;
+	
 	private String encodedImage;
 	
 	@NotNull

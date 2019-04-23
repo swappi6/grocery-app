@@ -88,4 +88,52 @@ public class OfferService {
 	       
 	        offerDao.update(offer);
 	    }
+	 
+	 public OfferData getOffer(Long offerId) throws GroceryException{
+	        Optional<Offer> offer = offerDao.findById(offerId);
+	        if (!offer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
+	        OfferData data = new OfferData();
+	        data.setName(offer.get().getName());
+	        data.setType(offer.get().getType());
+	        data.setExpiryDate(offer.get().getExpiryDate());
+	        data.setEncodedImage(offer.get().getImageUrl());
+	        data.setActive(offer.get().getActive());
+	        data.setMinAmount(offer.get().getMinAmount());
+	        data.setValue(offer.get().getValue());
+	        data.setDescription(offer.get().getDescription());
+	        return data;   
+	    }
+	 
+	 	double discountPrice(Long offerId , double actualPrice) throws GroceryException{
+	        Optional<Offer> offer = offerDao.findById(offerId);
+	        if (!offer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
+	        OfferData data = new OfferData();
+	        data.setType(offer.get().getType());
+	        data.setExpiryDate(offer.get().getExpiryDate());
+	        data.setActive(offer.get().getActive());
+	        data.setMinAmount(offer.get().getMinAmount());
+	        data.setValue(offer.get().getValue());
+			double discountPrice;
+			double value=data.getValue();
+			double finalPrice = actualPrice;
+			if(data.getActive()==true)
+			{
+				if(data.getMinAmount()>actualPrice)
+				{
+					if(data.getType().equals("PERCENTAGE"))
+					{
+						discountPrice = (value * actualPrice)/100;
+						finalPrice = actualPrice-discountPrice;
+					}
+					if(data.getType().equals("ABSOLUTE"))
+					{
+						discountPrice = value;
+						finalPrice =actualPrice-discountPrice;
+					}
+				}
+				else
+					return finalPrice;
+			}
+			return finalPrice;
+	    } 
 }

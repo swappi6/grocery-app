@@ -37,15 +37,15 @@ public class OfferDao extends AbstractDAO<Offer> {
     
     public void delete(Offer offer) {
         currentSession().delete(offer);
-   }
+    }
     
     public List<Offer> findAll() {
         return list(namedQuery("Offer.findAll"));
     }
 
-     public List<Offer> findAllValid(Date date) {
+    public List<Offer> findAllValid(Date date) {
          return list(namedQuery("Offer.findAllValid")
         		.setParameter("date", date));
-      }
+    }
      
 }
