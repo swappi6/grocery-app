@@ -104,36 +104,30 @@ public class OfferService {
 	        return data;   
 	    }
 	 
-	 	double discountPrice(Long offerId , double actualPrice) throws GroceryException{
+	  public Double discountPrice(Long offerId , Double actualPrice) throws GroceryException{
 	        Optional<Offer> offer = offerDao.findById(offerId);
 	        if (!offer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
-	        OfferData data = new OfferData();
-	        data.setType(offer.get().getType());
-	        data.setExpiryDate(offer.get().getExpiryDate());
-	        data.setActive(offer.get().getActive());
-	        data.setMinAmount(offer.get().getMinAmount());
-	        data.setValue(offer.get().getValue());
-			double discountPrice;
-			double value=data.getValue();
-			double finalPrice = actualPrice;
-			if(data.getActive()==true)
-			{
-				if(data.getMinAmount()>actualPrice)
-				{
-					if(data.getType().equals("PERCENTAGE"))
-					{
-						discountPrice = (value * actualPrice)/100;
-						finalPrice = actualPrice-discountPrice;
-					}
-					if(data.getType().equals("ABSOLUTE"))
-					{
-						discountPrice = value;
-						finalPrice =actualPrice-discountPrice;
-					}
-				}
-				else
-					return finalPrice;
-			}
+	        
+	        if(!offer.get().getActive().TRUE) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INACTIVE_OFFER);
+	        
+	        if(offer.get().getMinAmount() > actualPrice) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_MINAMOUNT);
+			
+	        Double discountPrice;
+			Double finalPrice = actualPrice;
+			
+	        if(offer.get().getType().equals(OfferType.PERCENTAGE))
+	        {
+	        	discountPrice = (offer.get().getValue() * actualPrice)/100;
+				finalPrice = actualPrice-discountPrice;
+				return finalPrice;
+	        }
+	        
+	        if(offer.get().getType().equals(OfferType.ABSOLUTE))
+	        {
+	        	discountPrice = offer.get().getValue();
+				finalPrice =actualPrice-discountPrice;
+				return finalPrice;
+	        }
 			return finalPrice;
 	    } 
 }

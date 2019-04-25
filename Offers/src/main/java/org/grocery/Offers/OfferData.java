@@ -29,7 +29,7 @@ public class OfferData {
 	private Integer minAmount;
 
 	@NotNull
-	private Integer value;
+	private Double value;
 
 	@NotNull
 	private String description;

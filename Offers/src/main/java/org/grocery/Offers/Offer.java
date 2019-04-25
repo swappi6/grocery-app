@@ -65,7 +65,7 @@ private Boolean active;
 private Integer minAmount;
 
 @Column(name= "value",nullable = false)
-private Integer value;
+private Double value;
 
 @Column(name= "description",nullable = false)
 private String description;
