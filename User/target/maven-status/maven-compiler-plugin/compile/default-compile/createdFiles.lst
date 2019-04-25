@@ -1,5 +1,7 @@
-org/grocery/User/UserDao.class
+org/grocery/User/Address.class
 org/grocery/User/User.class
 org/grocery/User/UserController.class
 org/grocery/User/UserProfile.class
+org/grocery/User/UserDao.class
+org/grocery/User/AddressType.class
 org/grocery/User/UserService.class
