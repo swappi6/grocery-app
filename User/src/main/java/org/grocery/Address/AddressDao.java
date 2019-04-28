@@ -1,4 +1,4 @@
-package org.grocery.User;
+package org.grocery.Address;
 
 import java.util.List;
 import java.util.Optional;

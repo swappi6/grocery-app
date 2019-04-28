@@ -1,4 +1,4 @@
-package org.grocery.User;
+package org.grocery.Address;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,4 +73,8 @@ public class Address {
 	
 	@Column(name="pincode",nullable=false)
 	private Long pincode;
+	
+	@Column(name="googleAddress",nullable=false)
+	private String googleAddress;
+
 }

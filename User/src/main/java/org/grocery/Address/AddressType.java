@@ -1,5 +1,6 @@
-package org.grocery.User;
+package org.grocery.Address;
 
 public enum AddressType {
 	HOME,OFFICE;
 }
+
