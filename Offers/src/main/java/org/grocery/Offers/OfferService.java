@@ -61,7 +61,7 @@ public class OfferService {
 	 
 	 public void updateOffer(OfferData offerData, Long offerId) throws GroceryException{
 	        Optional<Offer> optionalOffer = offerDao.findById(offerId);
-	        if (!optionalOffer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
+	        if (!optionalOffer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
 	        Offer offer = optionalOffer.get();
 	        if (offerData.getName() != null) {
 	            String imageUrl = store.rename(offer.getName(), Constants.Buckets.OFFER, offerData.getName());
