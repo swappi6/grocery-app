@@ -10,6 +10,9 @@ import lombok.Setter;
 public class AddressData {
 	
 	@NotNull
+	private Long userid;
+	
+	@NotNull
 	private String name;
 	
 	@NotNull
@@ -30,7 +33,7 @@ public class AddressData {
 	private AddressType type;
 	
 	@NotNull
-	private String latitute;
+	private String latitude;
 	
 	@NotNull
 	private String longitude;

@@ -19,22 +19,22 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name="Address")
+@Table(name="address")
 @NamedQueries(
 		{
 		@NamedQuery(
-					name="Address.findByAll",
-					query="SELECT e FROM Address"
+					name="Address.findAll",
+					query="SELECT e FROM Address e"
 					),
 		@NamedQuery(
-				name ="Address.findByUserId",
-				query ="SELECT e FROM Address"
-				+"where e.userId= :userId"
+					name ="Address.findByUserid",
+					query ="SELECT e FROM Address e "
+							+ "where e.userId = :userid"
 				),	
 		@NamedQuery(
-				name ="Address.findById",
-				query ="SELECT e FROM Address"
-				+"where e.id = :id"
+					name ="Address.findById",
+					query ="SELECT e FROM Address e "
+							+"where e.id = :id"
 				)
 		}
 		)
@@ -62,14 +62,20 @@ public class Address {
 	@Column(name="name",nullable=false)
 	private String name;
 	
-	@Column(name="line1",nullable=false)
-	private String line1;
+	@Column(name="houseno",nullable=false)
+	private String houseNumber;
 	
-	@Column(name="line2",nullable=false)
-	private String line2;
+	@Column(name="roadno",nullable=false)
+	private String roadNumber;
 	
-	@Column(name="line3",nullable=true)
-	private String line3;
+	@Column(name="city",nullable=false)
+	private String city;
+	
+	@Column(name="state",nullable=false)
+	private String state;
+	
+	@Column(name="landmark",nullable=true)
+	private String landmark;
 	
 	@Column(name="pincode",nullable=false)
 	private Long pincode;
@@ -77,4 +83,10 @@ public class Address {
 	@Column(name="googleAddress",nullable=false)
 	private String googleAddress;
 
+	public Address() {
+		
+	}
+	public Address(Long id) {
+	    this.id = id;
+	}
 }

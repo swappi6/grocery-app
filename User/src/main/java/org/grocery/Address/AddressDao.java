@@ -33,6 +33,8 @@ public class AddressDao extends AbstractDAO<Address> {
 		 currentSession().delete(address);
 	}
 	
+	
+	
 	public Address update(Address address) {
 		return persist(address);
 	}
@@ -41,7 +43,7 @@ public class AddressDao extends AbstractDAO<Address> {
 		return list(namedQuery("Address.findAll"));
 	}
 	
-	public List<Address> findByUserId(Integer userid) {
+	public List<Address> findByUserId(Long userid) {
 		return list(namedQuery("Address.findByUserId")
 				.setParameter("userId", userid));
 	}
