@@ -11,14 +11,17 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
 import org.grocery.Auth.AuthTokenDao;
+import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.Offers.Offer;
 import org.grocery.Offers.OfferDao;
-import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
 import org.grocery.admin.Admin;
 import org.grocery.admin.AdminDao;
+import org.grocery.admin.filter.AdminAuthFilter;
+import org.grocery.admin.filter.ReadAuthFilter;
+import org.grocery.admin.filter.WriteAuthFilter;
 import org.grocery.category.Category;
 import org.grocery.category.CategoryDao;
 import org.grocery.config.GroceryConfiguration;
@@ -26,11 +29,13 @@ import org.grocery.config.GrocerySpringConfig;
 import org.grocery.config.RedisConfiguration;
 import org.grocery.item.Item;
 import org.grocery.item.ItemDao;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import redis.clients.jedis.JedisPool;
@@ -73,6 +78,10 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
             System.out.println(entry.getValue());
             env.jersey().register(entry.getValue());
         }
+        env.jersey().register(context.getBean(ReadAuthFilter.class));
+        env.jersey().register(context.getBean(AuthFilter.class));
+        env.jersey().register(context.getBean(AdminAuthFilter.class));
+        env.jersey().register(context.getBean(WriteAuthFilter.class));
     }
     
     @Override
@@ -84,7 +93,6 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     public void run(GroceryConfiguration config, Environment env) {
         JedisPool jedisPool = initializeRedis(config);
         env.jersey().register(new GroceryExceptionMapper());
-        env.jersey().register(AuthFilter.class);
         env.jersey().register(new RedisService(jedisPool));
         env.jersey().register(new UserDao(hibernate.getSessionFactory()));
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));

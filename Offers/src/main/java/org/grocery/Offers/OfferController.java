@@ -2,8 +2,12 @@ package org.grocery.Offers;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -11,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +37,19 @@ public class OfferController {
         return Response.ok(name +" Hello Robin").build();
 	}
 	
-
+	@GET
+    @UnitOfWork
+    @Path("/offers")
+    public Response getAllOffers() throws Exception{
+        ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        List<Offer> offers = offerService.getAllOffers();
+        return responseBuilder.entity(offers)
+                .build();
+    }
+	
 	@GET
 	@UnitOfWork
-	@Path("/get-valid-offers")
+	@Path("/valid-offers")
 	public Response getAllValid()
 	{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
@@ -46,5 +60,31 @@ public class OfferController {
 	}
 	
 	
+	@POST
+	@UnitOfWork
+	@Path("/create-offer")
+	public Response createOffer(@Valid OfferData offerData) throws GroceryException {
+	        ResponseBuilder responseBuilder = Response.noContent();
+	        offerService.createOffer(offerData);
+	        return responseBuilder.build();
+	    }
+	
+	 @PUT
+	 @UnitOfWork
+	 @Path("/update-offer/{offerId}")
+	    public Response updateOffer(OfferData offerData, @PathParam(value = "offerId") Long offerId) throws GroceryException {
+	        ResponseBuilder responseBuilder = Response.noContent();
+	        offerService.updateOffer(offerData, offerId);
+	        return responseBuilder.build();
+	    }
+	    
+	 @DELETE
+	 @UnitOfWork
+	 @Path("/delete-offer/{offerId}")
+	    public Response deleteOffer(@PathParam(value = "offerId") Long offerId) throws GroceryException {
+	        ResponseBuilder responseBuilder = Response.noContent();
+	        offerService.delete(offerId);
+	        return responseBuilder.build();
+	    }
 	
 }

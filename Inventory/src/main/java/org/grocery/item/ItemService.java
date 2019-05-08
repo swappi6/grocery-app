@@ -38,7 +38,7 @@ public class ItemService {
         Optional<Item> optionalItem = itemDao.findById(id);
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_CATEGORY_ID);
         Item item = optionalItem.get();
-        store.delete(item.getName(), Constants.Buckets.ITEM); 
+        store.delete(Constants.Buckets.ITEM, item.getImageUrl()); 
         itemDao.delete(item);
     }
     
@@ -51,7 +51,7 @@ public class ItemService {
         item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(itemData.getName(), Constants.Buckets.ITEM, inputStream);
+            String imageUrl = store.upload(Constants.Buckets.ITEM, inputStream);
             item.setImageUrl(imageUrl);
         }
         Category cat = new Category();
@@ -72,9 +72,7 @@ public class ItemService {
         if (!optionalItem.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
         Item item = optionalItem.get();
         if (itemData.getName() != null) {
-            String imageUrl = store.rename(item.getName(), Constants.Buckets.ITEM, itemData.getName());
             item.setName(itemData.getName());
-            item.setImageUrl(imageUrl);
         }
         if (itemData.getDescription() != null)
             item.setDescription(itemData.getDescription());
@@ -86,7 +84,7 @@ public class ItemService {
             item.setSubscribable(itemData.getSubscribable());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
-            String imageUrl = store.upload(item.getName(), Constants.Buckets.ITEM, inputStream);
+            String imageUrl = store.upload(Constants.Buckets.ITEM, inputStream);
             item.setImageUrl(imageUrl);
         }
         if (itemData.getParent() != null) {

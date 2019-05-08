@@ -180,14 +180,15 @@
   <packaging>pom</packaging>
   <modules>
   	<module>User</module>
+  	<module>Admin</module>
   	<module>Auth</module>
   	<module>Booking</module>
   	<module>Payment</module>
+  	<module>Offers</module>
   	<module>Inventory</module>
   	<module>Utility</module>
   	<module>Grocery-app</module>
-  	<module>Admin</module>
-  	<module>Offers</module>
     <module>Orders</module>
+  	<module>Subscription</module>
   </modules>
 </project>
