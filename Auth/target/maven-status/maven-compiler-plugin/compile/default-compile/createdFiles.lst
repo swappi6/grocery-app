@@ -3,6 +3,6 @@ org/grocery/Auth/AuthToken.class
 org/grocery/Auth/AuthTokens.class
 org/grocery/Auth/RefreshAccessTokenRequest.class
 org/grocery/Auth/AuthService.class
-org/grocery/Auth/AuthController.class
 org/grocery/Auth/AuthFilter.class
 org/grocery/Auth/AuthTokenDao.class
+org/grocery/Auth/AuthController.class
