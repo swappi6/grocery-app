@@ -14,6 +14,9 @@ import org.grocery.Auth.AuthTokenDao;
 import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.Offers.Offer;
 import org.grocery.Offers.OfferDao;
+import org.grocery.Orders.Order;
+import org.grocery.Orders.OrderDao;
+import org.grocery.Orders.OrderItem;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
@@ -29,13 +32,11 @@ import org.grocery.config.GrocerySpringConfig;
 import org.grocery.config.RedisConfiguration;
 import org.grocery.item.Item;
 import org.grocery.item.ItemDao;
-import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
-import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import redis.clients.jedis.JedisPool;
@@ -48,7 +49,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     }
     
 
-    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class) {
+    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class,Order.class,OrderItem.class) {
         public DataSourceFactory getDataSourceFactory(GroceryConfiguration configuration) {
             return configuration.getDataSourceFactory();
         }
@@ -100,6 +101,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new ItemDao(hibernate.getSessionFactory()));
         env.jersey().register(new OfferDao(hibernate.getSessionFactory()));
         env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
+        env.jersey().register(new OrderDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);
