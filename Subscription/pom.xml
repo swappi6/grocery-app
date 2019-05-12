@@ -6,4 +6,16 @@
     <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>Subscription</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>org.grocery</groupId>
+      <artifactId>Inventory</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.grocery</groupId>
+      <artifactId>Utility</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

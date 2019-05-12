@@ -103,15 +103,17 @@ public class ItemService {
         itemDao.update(item);
     }
     
-//    public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
-//        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
-//        List<Item> items = itemDao.findInIds(itemIds);
-//        Double sum = 0D;
-//        for (Long id : itemIds) {
-//            sum+= getQuantity(cart, id) * getPrice(items, id);
-//        }
-//        return sum;
-//    }
+    public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
+        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
+        List<Item> items = itemDao.findInIds(itemIds);
+        System.out.println("ItemIds : " + itemIds);
+        System.out.println("Items : " + items.size());
+        Double sum = 0D;
+        for (Long id : itemIds) {
+            sum+= getQuantity(cart, id) * getPrice(items, id);
+        }
+        return sum;
+    }
     
     public List<Item> getItems(List<Long> itemIds) throws GroceryException{
         return itemDao.findInIds(itemIds);
@@ -126,8 +128,9 @@ public class ItemService {
     
     private Double getPrice(List<Item> items, Long id) throws GroceryException{
         Optional<Item> item = items.stream().filter(e -> id.equals(e.getId())).findFirst();
-        if (item.isPresent())
-            return item.get().getDiscountedPrice();
+        if (item.isPresent()) {
+            return item.get().getPrice();
+        }
         throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
     }
 }

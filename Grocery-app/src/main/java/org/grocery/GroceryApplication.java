@@ -19,6 +19,10 @@ import org.grocery.Offers.OfferDao;
 import org.grocery.Orders.Order;
 import org.grocery.Orders.OrderDao;
 import org.grocery.Orders.OrderItem;
+import org.grocery.Subscription.Subscription;
+import org.grocery.Subscription.SubscriptionDao;
+import org.grocery.Subscription.SubscriptionOrder;
+import org.grocery.Subscription.SubscriptionOrderItem;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
@@ -51,7 +55,8 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     }
     
 
-    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class,Order.class,OrderItem.class, Address.class) {
+    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class,Order.class,OrderItem.class, Address.class, Subscription.class,
+            SubscriptionOrder.class, SubscriptionOrderItem.class) {
         public DataSourceFactory getDataSourceFactory(GroceryConfiguration configuration) {
             return configuration.getDataSourceFactory();
         }
@@ -105,6 +110,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
         env.jersey().register(new OrderDao(hibernate.getSessionFactory()));
         env.jersey().register(new AddressDao(hibernate.getSessionFactory()));
+        env.jersey().register(new SubscriptionDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);

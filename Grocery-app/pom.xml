@@ -42,6 +42,11 @@
 		<artifactId>Orders</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+      <dependency>
+          <groupId>org.grocery</groupId>
+          <artifactId>Subscription</artifactId>
+          <version>${project.version}</version>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
