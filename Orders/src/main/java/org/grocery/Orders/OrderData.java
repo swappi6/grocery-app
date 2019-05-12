@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.grocery.item.ItemQuantity;
+
 import lombok.Getter;
 import lombok.Setter;
 

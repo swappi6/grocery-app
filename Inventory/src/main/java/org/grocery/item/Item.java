@@ -46,6 +46,11 @@ import lombok.ToString;
                 name = "Item.searchByDescription",
                 query = "SELECT m FROM Item m "
                         + "where m.description like :description"
+        ),
+        @NamedQuery(
+                name = "Item.findInIds",
+                query = "SELECT m FROM Item m "
+                        + "where m.id IN (:description)"
         )
     }
 )
@@ -69,7 +74,7 @@ public class Item {
     private Double price;
     
     @Column(name = "discountedPrice", nullable = true)
-    private String discountedPrice;
+    private Double discountedPrice;
     
     @Column(name = "created_at", nullable = true)
     private Timestamp createdAt;

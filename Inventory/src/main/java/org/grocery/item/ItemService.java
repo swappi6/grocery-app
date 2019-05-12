@@ -3,6 +3,7 @@ package org.grocery.item;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
@@ -93,5 +94,29 @@ public class ItemService {
             item.setCategory(cat);
         }
         itemDao.update(item);
+    }
+    
+    public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
+        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
+        List<Item> items = itemDao.findInIds(itemIds);
+        Double sum = 0D;
+        for (Long id : itemIds) {
+            sum+= getQuantity(cart, id) * getPrice(items, id);
+        }
+        return sum;
+    }
+    
+    private Integer getQuantity(List<ItemQuantity> cart, Long id) throws GroceryException{
+        Optional<ItemQuantity> item = cart.stream().filter(e -> id.equals(e.getItemId())).findFirst();
+        if (item.isPresent())
+            return item.get().getQuantity();
+        throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
+    }
+    
+    private Double getPrice(List<Item> items, Long id) throws GroceryException{
+        Optional<Item> item = items.stream().filter(e -> id.equals(e.getId())).findFirst();
+        if (item.isPresent())
+            return item.get().getDiscountedPrice();
+        throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
     }
 }

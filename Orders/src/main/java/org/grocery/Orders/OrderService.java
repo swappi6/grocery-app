@@ -10,6 +10,7 @@ import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
 import org.grocery.Utils.Constants;
 import org.grocery.Utils.FileStore;
+import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
