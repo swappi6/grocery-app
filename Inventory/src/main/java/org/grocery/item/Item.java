@@ -89,6 +89,9 @@ public class Item {
     
     @Column(name= "subscribable",nullable = false)
     private Boolean subscribable;
+    
+    @Column(name= "least_count",nullable = false)
+    private String leastCount;
 
     public Item() {
     }
@@ -103,6 +106,11 @@ public class Item {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
+    }
+    
+    public static void main (String[] args) {
+        
+        
     }
 
 }

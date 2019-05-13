@@ -50,6 +50,7 @@ public class ItemService {
         item.setPrice(itemData.getPrice());
         item.setDiscountedPrice(itemData.getDiscountedPrice());
         item.setSubscribable(itemData.getSubscribable());
+        item.setLeastCount(itemData.getLeastCount());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(Constants.Buckets.ITEM, inputStream);
@@ -83,6 +84,8 @@ public class ItemService {
             item.setDiscountedPrice(itemData.getDiscountedPrice());
         if (itemData.getSubscribable() != null)
             item.setSubscribable(itemData.getSubscribable());
+        if (itemData.getLeastCount() != null)
+            item.setLeastCount(itemData.getLeastCount());
         InputStream inputStream =encodedStringHelper. getInputStream(itemData.getEncodedImage());
         if (inputStream != null) {
             String imageUrl = store.upload(Constants.Buckets.ITEM, inputStream);
@@ -104,6 +107,11 @@ public class ItemService {
             sum+= getQuantity(cart, id) * getPrice(items, id);
         }
         return sum;
+    }
+    
+    public List<Item> getItems(List<ItemQuantity> cart) throws GroceryException{
+        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
+        return itemDao.findInIds(itemIds);
     }
     
     private Integer getQuantity(List<ItemQuantity> cart, Long id) throws GroceryException{
