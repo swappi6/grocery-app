@@ -1,8 +1,10 @@
 package org.grocery.item;
 
 import java.io.InputStream;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
@@ -62,11 +64,13 @@ public class ItemService {
         itemDao.create(item);
     }
     
-    public List<Item> searchItem(String search) throws GroceryException{
+    public Set<Item> searchItem(String search) throws GroceryException{
         List<Item> itemByName = itemDao.searchByName(search);
         List<Item> itemByDesc = itemDao.searchByDescription(search);
-        itemByName.addAll(itemByDesc);
-        return itemByName;
+        Set<Item> linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(itemByName);
+        linkedHashSet.addAll(itemByDesc);
+        return linkedHashSet;
     }
     
     public void updateItem(ItemData itemData, Long itemId) throws GroceryException{
