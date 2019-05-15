@@ -8,14 +8,11 @@ import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
-import org.grocery.Utils.Constants;
 import org.grocery.Utils.FileStore;
 import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.dataformat.yaml.snakeyaml.scanner.Constant;
 
 @Component
 public class OrderService {
@@ -26,7 +23,6 @@ public class OrderService {
 	FileStore store;
 	@Autowired
 	ItemService itemService;
-	
 	
 	
 	public void delete(Long id) throws GroceryException{
@@ -42,11 +38,12 @@ public class OrderService {
 		order.setUserId(orderData.getUserId());
 		order.setAddressId(orderData.getAddressId());
 		order.setOfferId(orderData.getOfferId());
+		order.setActualPrice(itemService.getCartPrice(orderData.getItems()));
 		List<OrderItem> items = new LinkedList<OrderItem>();
 		for (ItemQuantity itemQauntity : orderData.getItems())
 			items.add(mapToOrderItem(itemQauntity, order));
  		order.setItems(items);
-		orderDao.create(order);
+ 		orderDao.create(order);
 	}
 	
 	private OrderItem mapToOrderItem (ItemQuantity itemQauntity, Order order) {
@@ -73,10 +70,11 @@ public class OrderService {
 		List<Order>orderByUserId = orderDao.findByUserId(search);
 		return orderByUserId;
 	}
-	public List<Order> searchOrderByDate(String search) throws GroceryException{
-		List<Order>orderByDate = orderDao.findByDate(search);
-		return orderByDate;
+	public List<Order> searchOrderByDate(Long timestamp) throws GroceryException{
+		return orderDao.findByCreatedDate(timestamp);
+	}
+	public List<Order> searchActiveOrder(Long date) throws GroceryException{
+		return orderDao.findActiveOrder(date);
 	}
 	
-
 }

@@ -98,6 +98,7 @@ public class ItemService {
     
     public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
         List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
+        System.out.println("**********"+itemIds+"************");
         List<Item> items = itemDao.findInIds(itemIds);
         Double sum = 0D;
         for (Long id : itemIds) {

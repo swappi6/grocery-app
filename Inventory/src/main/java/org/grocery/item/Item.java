@@ -50,7 +50,7 @@ import lombok.ToString;
         @NamedQuery(
                 name = "Item.findInIds",
                 query = "SELECT m FROM Item m "
-                        + "where m.id IN (:description)"
+                        + "where m.id IN (:itemIds)"
         )
     }
 )

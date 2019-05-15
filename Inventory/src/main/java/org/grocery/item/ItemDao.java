@@ -60,7 +60,7 @@ public class ItemDao extends AbstractDAO<Item> {
     
     public List<Item> findInIds(List<Long> itemIds) {
         return list(namedQuery("Item.findInIds")
-                .setParameter("itemIds", itemIds));
+                .setParameterList("itemIds", itemIds));
     }
 
 }

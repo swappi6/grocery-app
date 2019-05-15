@@ -1,5 +1,8 @@
 package org.grocery.Orders;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,10 +60,20 @@ public class OrderController {
 	@GET
 	@UnitOfWork
 	@Path("/search-order-by-date")
-	public Response searchOrderByDate(@QueryParam(value = "date")String date) throws GroceryException{
+	public Response searchOrderByDate(@QueryParam(value = "date")Long date) throws GroceryException, ParseException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		SearchOrderResponse response = new SearchOrderResponse();
 		List<Order> order = orderService.searchOrderByDate(date);
+		response.setOrder(order);
+		return responseBuilder.entity(response).build();
+	}
+	@GET
+	@UnitOfWork
+	@Path("/search-active-order")
+	public Response searchActiveOrder(@QueryParam(value = "date") Long date) throws GroceryException{
+		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+		SearchOrderResponse response = new SearchOrderResponse();
+		List<Order> order = orderService.searchActiveOrder(date);
 		response.setOrder(order);
 		return responseBuilder.entity(response).build();
 	}
