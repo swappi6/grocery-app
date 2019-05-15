@@ -58,7 +58,8 @@ public class OrderService {
 		Optional<Order> optionalOrder = orderDao.findById(orderId);
 		if(!optionalOrder.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ORDER_ID) ;
 		Order order = optionalOrder.get();
-		order.setStatus(updateOrder.getStatus());
+		if (updateOrder.getStatus() != null)
+			order.setStatus(updateOrder.getStatus());
 		orderDao.update(order);
 	}
 	public Optional<Order> searchOrderById (long search) throws GroceryException{
