@@ -20,4 +20,5 @@ public class ItemData {
     private Double discountedPrice;
     private Boolean subscribable;
     private String availability;
+    private String leastCount;
 }
