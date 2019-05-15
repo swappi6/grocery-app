@@ -1,4 +1,5 @@
 package org.grocery.Orders;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -48,9 +51,14 @@ import lombok.ToString;
 							+" where e.id = :id"
 					),
 			@NamedQuery(
-					name = "Order.findByDate",
+					name = "Order.findByCreatedDate",
 					query = "Select e from Order e "
-							+"where e.createdAt = :createdAt"  //created_at is timestamp how will it give date.//
+							+"where DATE(e.created_at) = DATE(:created_at)"
+					),
+			@NamedQuery(
+					name = "Order.findActiveOrder",
+					query = "select e from Order e "
+							+"where e.delivery_day > :delivery_day"
 					)
 		}
 	)
@@ -65,26 +73,28 @@ public class Order {
 
 
 	@Column(name = "user_id" , nullable = false)
-	private long userId;
+	private Long userId;
 
 	@Column(name = "address_id" , nullable = false)
-	private long addressId;
+	private Long addressId;
 
 	@Column(name = "actual_price" , nullable = true)
-	private double actualPrice;
+	private Double actualPrice;
 
 	@Column(name = "discounted_price" , nullable = true)
-	private double discountedPrice;
+	private Double discountedPrice;
 
 	@Column(name = "offer_id" , nullable = true)
-	private long offerId;
+	private Long offerId;
 
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at" , nullable = false)
-	private Timestamp createdAt;
+	private Timestamp created_at;
 
 	@Column(name = "updated_at" , nullable=false)
 	private Timestamp updatedAt;
+	
+	@Column(name = "delivery_day" , nullable = true)
+	private Date delivery_day;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status" , nullable = true)

@@ -57,5 +57,10 @@ public class ItemDao extends AbstractDAO<Item> {
         return list(namedQuery("Item.searchByDescription")
                 .setParameter("description", "%"+searchKeyword+"%"));
     }
+    
+    public List<Item> findInIds(List<Long> itemIds) {
+        return list(namedQuery("Item.findInIds")
+                .setParameterList("itemIds", itemIds));
+    }
 
 }

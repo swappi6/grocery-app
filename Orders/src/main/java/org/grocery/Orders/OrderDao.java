@@ -1,13 +1,11 @@
 package org.grocery.Orders;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
-
-
-import com.sun.research.ws.wadl.Option;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -46,14 +44,20 @@ public class OrderDao extends AbstractDAO<Order>{
 		return list(namedQuery("Order.findAll"));
 	}*/
 	
-	public List<Order>findByDate(String keyWord){
-		return list(namedQuery("Order.findByDate")
-				.setParameter("date", "%"+keyWord+"%"));
+	public List<Order>findByCreatedDate(Long millis){
+		Date date = new Date(millis);
+		return list(namedQuery("Order.findByCreatedDate")
+				.setParameter("created_at", date));
 	}
 	
 	public List<Order>findByUserId(long parent){
 		return list(namedQuery("Order.findByUserId")
 				.setParameter("userId", parent));
+	}
+	public List<Order>findActiveOrder(Long millis){
+		Date date = new Date(millis);
+		return list(namedQuery("Order.findActiveOrder")
+				.setParameter("delivery_day",date));
 	}
 	
 	/*public List<Order>findByAddressId(Long parent){

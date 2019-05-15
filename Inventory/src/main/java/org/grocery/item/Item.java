@@ -1,7 +1,6 @@
 package org.grocery.item;
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +46,11 @@ import lombok.ToString;
                 name = "Item.searchByDescription",
                 query = "SELECT m FROM Item m "
                         + "where m.description like :description"
+        ),
+        @NamedQuery(
+                name = "Item.findInIds",
+                query = "SELECT m FROM Item m "
+                        + "where m.id IN (:itemIds)"
         )
     }
 )
@@ -70,7 +74,7 @@ public class Item {
     private Double price;
     
     @Column(name = "discountedPrice", nullable = true)
-    private String discountedPrice;
+    private Double discountedPrice;
     
     @Column(name = "created_at", nullable = true)
     private Timestamp createdAt;
@@ -84,6 +88,9 @@ public class Item {
     
     @Column(name= "subscribable",nullable = false)
     private Boolean subscribable;
+    
+    @Column(name= "least_count",nullable = false)
+    private String leastCount;
 
     public Item() {
     }
@@ -99,5 +106,27 @@ public class Item {
         this.description = description;
         this.imageUrl = imageUrl;
     }
+    
+    @Override
+    public boolean equals(Object that) {
+        if (that == null)
+          return false;
+        if (that instanceof Item)
+          return this.equals((Item)that);
+        return false;
+    }
+    
+    public boolean equals(Item that) {
+        if (that == null)
+          return false;
+        if (!this.id.equals(that.id))
+          return false;
+        return true;
+    }
+    
+    @Override
+      public int hashCode() {
+        return this.id.hashCode();
+      }
 
 }
