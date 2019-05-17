@@ -1,20 +1,19 @@
 package org.grocery.Orders;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
+import org.grocery.User.UserService;
 import org.grocery.Utils.FileStore;
 import org.grocery.item.Item;
-import org.grocery.item.ItemData;
 import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
+import org.grocery.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +26,10 @@ public class OrderService {
 	FileStore store;
 	@Autowired
 	ItemService itemService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	Mapper mapper;
 	
 	
 	public void delete(Long id) throws GroceryException{
@@ -41,7 +44,7 @@ public class OrderService {
 		order.setUserId(orderData.getUserId());
 		order.setAddressId(orderData.getAddressId());
 		order.setOfferId(orderData.getOfferId());
-		order.setActualPrice(itemService.getCartPrice(orderData.getItems()));
+		//order.setActualPrice(itemService.getCartPrice(orderData.getItems()));
 		List<OrderItem> items = new LinkedList<OrderItem>();
 		for (ItemQuantity itemQauntity : orderData.getItems())
 			items.add(mapToOrderItem(itemQauntity, order));
@@ -55,19 +58,18 @@ public class OrderService {
 		orderItem.setOrder(order);
 		return orderItem;
 	}
-//	private List<Item> itemDetails (List<Long> itemIds , Order order) throws Exception, GroceryException {
-//		//Item item = new Item();
-//		//item.setDescription(itemDetail.getDescription());
-//		List<Item> item =itemService.getItems(itemIds);
-//		return item;
+//	//public Item itemDetails (Long itemIds, Order order) throws Exception, GroceryException {
+//		
 //	}
-	public Optional<Order> searchOrderById (long search) throws GroceryException{
-		Optional<Order>orderById = orderDao.findById(search);
-//		Order order = new Order();
-//		//ItemDetail itemDetail = new ItemDetail();
-//		List<Long> items = new LinkedList<Order>();
-//		//for(ItemDetail itemDetail : itemService.getItems(items));
-//		items.add(itemDetails(itemDetail, order));
+	public Optional<Order> searchOrderById (long id) throws GroceryException, Exception{
+		Optional<Order> orderById = orderDao.findById(id);
+//		List<OrderItemDetails> orderDetailList = new LinkedList<>();
+//		for(Order order : orderById) {
+//			OrderItemDetails orderItemDetails = new OrderItemDetails();
+//			mapper.copyProperties(orderItemDetails , orderById);
+//			orderItemDetails.setItemDetails(getItemdetails(orderById));
+//			orderDetailList.add(orderItemDetails);
+//		}
 		return orderById; 
 		
 	}
@@ -80,16 +82,41 @@ public class OrderService {
 		orderDao.update(order);
 	}
 	
-	public List<Order> searchOrderByUserId (long search) throws GroceryException{
-		List<Order>orderByUserId = orderDao.findByUserId(search);
-		return orderByUserId;
+	public List<OrderItemDetails> searchOrderByUserId (long search) throws GroceryException{
+		List<Order> orderByUserId = orderDao.findByUserId(search);
+		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+		for (Order order : orderByUserId) {
+			OrderItemDetails orderDetails = new OrderItemDetails();
+			mapper.copyProperties(orderDetails, order);
+			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetailsList.add(orderDetails);
+		}
+		return orderDetailsList;
 	}
-	public List<Order> searchOrderByDate(Long timestamp) throws GroceryException{
-		return orderDao.findByCreatedDate(timestamp);
+	public List<OrderItemDetails> searchOrderByDate(Long timestamp) throws GroceryException{
+		List<Order> orderByDate = orderDao.findByCreatedDate(timestamp);
+		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+		for (Order order : orderByDate) {
+			OrderItemDetails orderDetails = new OrderItemDetails();
+			mapper.copyProperties(orderDetails, order);
+			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetailsList.add(orderDetails);
+		}
+		//return orderDao.findByCreatedDate(orderByDate);
+		return orderDetailsList;
 	}
 	public List<Order> searchActiveOrder(OrderStatus status) throws GroceryException{
 		List<Order> activeOrder = orderDao.findActiveOrder(status);
 		return activeOrder;
+	}
+	
+
+	private List<Item> getItemdetails(Order order) throws GroceryException{
+		List<Long> itemIds = new LinkedList<Long>();
+		for (OrderItem orderItem: order.getItems()) {
+			itemIds.add(orderItem.getItemId());
+		}
+		return itemService.getItems(itemIds);
 	}
 	
 }

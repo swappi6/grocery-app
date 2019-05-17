@@ -103,15 +103,15 @@ public class ItemService {
         itemDao.update(item);
     }
     
-    public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
-        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
-        List<Item> items = itemDao.findInIds(itemIds);
-        Double sum = 0D;
-        for (Long id : itemIds) {
-            sum+= getQuantity(cart, id) * getPrice(items, id);
-        }
-        return sum;
-    }
+//    public Double getCartPrice(List<ItemQuantity> cart) throws GroceryException{
+//        List<Long> itemIds = cart.stream().map(e -> e.getItemId()).collect(Collectors.toList());
+//        List<Item> items = itemDao.findInIds(itemIds);
+//        Double sum = 0D;
+//        for (Long id : itemIds) {
+//            sum+= getQuantity(cart, id) * getPrice(items, id);
+//        }
+//        return sum;
+//    }
     
     public List<Item> getItems(List<Long> itemIds) throws GroceryException{
         return itemDao.findInIds(itemIds);

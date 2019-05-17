@@ -3,6 +3,7 @@ package org.grocery.Orders;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
+import org.grocery.User.User;
+import org.grocery.User.UserService;
+import org.grocery.item.Item;
+import org.grocery.item.ItemService;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,16 +41,21 @@ public class OrderController {
 
 	@Autowired
 	OrderService orderService;
+	@Autowired
+	ItemService itemService;
+	@Autowired
+	UserService userService;
 	
 	@GET
 	@UnitOfWork
 	@Path("/searchById")
-	public Response searchOrderById(@QueryParam(value = "orderId")long orderId)throws GroceryException{
+	public Response searchOrderById(@QueryParam(value = "orderId")long orderId)throws GroceryException, Exception{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		//SearchOrderResponse response = new SearchOrderResponse();
-		Optional<Order> order=orderService.searchOrderById(orderId);
+		Optional<Order> orders=orderService.searchOrderById(orderId);
 		//response.setOrder(order);
-		return responseBuilder.entity(order.get()).build();
+		return responseBuilder.entity(orders.get()).build();
+		//return responseBuilder.entity(response).build();
 	}
 
 	@GET
@@ -53,10 +63,16 @@ public class OrderController {
 	@Path("/search-order-by-user-id")
 	public Response searchOrderByUserId(@QueryParam(value = "userId")long userId)throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-		SearchOrderResponse response = new SearchOrderResponse();
-		List<Order> order =orderService.searchOrderByUserId(userId);
-		response.setOrder(order);
-		return responseBuilder.entity(response).build();
+//		SearchOrderResponse response = new SearchOrderResponse();
+		List<OrderItemDetails> orders =orderService.searchOrderByUserId(userId);
+//		
+//		
+//		List<Item> itemDetails = itemService.getItems(26L);
+//		User user = userService.getUserById(orders.get(0).getUserId());
+//		response.setOrder(orders);
+//		response.setItems(itemDetails);
+//		response.setUser(user);
+		return responseBuilder.entity(orders).build();
 	}
 	@GET
 	@UnitOfWork
@@ -64,9 +80,9 @@ public class OrderController {
 	public Response searchOrderByDate(@QueryParam(value = "date")Long date) throws GroceryException, ParseException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		SearchOrderResponse response = new SearchOrderResponse();
-		List<Order> order = orderService.searchOrderByDate(date);
-		response.setOrder(order);
-		return responseBuilder.entity(response).build();
+		List<OrderItemDetails> order = orderService.searchOrderByDate(date);
+		//response.setOrder(order);
+		return responseBuilder.entity(order).build();
 	}
 	@GET
 	@UnitOfWork
