@@ -106,7 +106,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);
         cors.setInitParameter("allowedOrigins", "*");
-        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin,AUTH_TOKEN");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin,AUTH_TOKEN,ACCESS_TOKEN");
         cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
         cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
 

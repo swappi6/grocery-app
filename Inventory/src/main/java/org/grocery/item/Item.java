@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.grocery.category.Category;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -82,7 +83,6 @@ public class Item {
     private Timestamp updatedAt;
     
     @ManyToOne()
-    @JsonBackReference
     @JoinColumn(name= "category_id")
     private Category category;
     
