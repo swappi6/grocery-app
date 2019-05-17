@@ -71,7 +71,7 @@ public class Category {
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
     
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne()
     @JoinColumn(name="parent")
     private Category parent;
