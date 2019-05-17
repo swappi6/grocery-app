@@ -1,14 +1,18 @@
 package org.grocery.Orders;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
 import org.grocery.Utils.FileStore;
+import org.grocery.item.Item;
+import org.grocery.item.ItemData;
 import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +33,6 @@ public class OrderService {
 		Optional<Order> optionalOrder = orderDao.findById(id);
 		if (!optionalOrder.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ORDER_ID);
 		Order order = optionalOrder.get();
-		
 		orderDao.delete(order);
 	}
 	
@@ -45,7 +48,6 @@ public class OrderService {
  		order.setItems(items);
  		orderDao.create(order);
 	}
-	
 	private OrderItem mapToOrderItem (ItemQuantity itemQauntity, Order order) {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setItemId(itemQauntity.getItemId());
@@ -53,7 +55,22 @@ public class OrderService {
 		orderItem.setOrder(order);
 		return orderItem;
 	}
-	
+//	private List<Item> itemDetails (List<Long> itemIds , Order order) throws Exception, GroceryException {
+//		//Item item = new Item();
+//		//item.setDescription(itemDetail.getDescription());
+//		List<Item> item =itemService.getItems(itemIds);
+//		return item;
+//	}
+	public Optional<Order> searchOrderById (long search) throws GroceryException{
+		Optional<Order>orderById = orderDao.findById(search);
+//		Order order = new Order();
+//		//ItemDetail itemDetail = new ItemDetail();
+//		List<Long> items = new LinkedList<Order>();
+//		//for(ItemDetail itemDetail : itemService.getItems(items));
+//		items.add(itemDetails(itemDetail, order));
+		return orderById; 
+		
+	}
 	public void updateOrder(UpdateOrder updateOrder, long orderId) throws GroceryException {
 		Optional<Order> optionalOrder = orderDao.findById(orderId);
 		if(!optionalOrder.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ORDER_ID) ;
@@ -62,11 +79,7 @@ public class OrderService {
 			order.setStatus(updateOrder.getStatus());
 		orderDao.update(order);
 	}
-	public Optional<Order> searchOrderById (long search) throws GroceryException{
-		Optional<Order>orderById = orderDao.findById(search);
-		return orderById; 
-		
-	}
+	
 	public List<Order> searchOrderByUserId (long search) throws GroceryException{
 		List<Order>orderByUserId = orderDao.findByUserId(search);
 		return orderByUserId;
@@ -74,8 +87,9 @@ public class OrderService {
 	public List<Order> searchOrderByDate(Long timestamp) throws GroceryException{
 		return orderDao.findByCreatedDate(timestamp);
 	}
-	public List<Order> searchActiveOrder(Long date) throws GroceryException{
-		return orderDao.findActiveOrder(date);
+	public List<Order> searchActiveOrder(OrderStatus status) throws GroceryException{
+		List<Order> activeOrder = orderDao.findActiveOrder(status);
+		return activeOrder;
 	}
 	
 }

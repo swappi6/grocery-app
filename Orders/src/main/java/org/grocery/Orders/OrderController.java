@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -44,9 +45,9 @@ public class OrderController {
 		//SearchOrderResponse response = new SearchOrderResponse();
 		Optional<Order> order=orderService.searchOrderById(orderId);
 		//response.setOrder(order);
-		
 		return responseBuilder.entity(order.get()).build();
 	}
+
 	@GET
 	@UnitOfWork
 	@Path("/search-order-by-user-id")
@@ -69,11 +70,11 @@ public class OrderController {
 	}
 	@GET
 	@UnitOfWork
-	@Path("/search-active-order")
-	public Response searchActiveOrder(@QueryParam(value = "date") Long date) throws GroceryException{
+	@Path("/search-order")
+	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull OrderStatus status) throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		SearchOrderResponse response = new SearchOrderResponse();
-		List<Order> order = orderService.searchActiveOrder(date);
+		List<Order> order = orderService.searchActiveOrder(status);
 		response.setOrder(order);
 		return responseBuilder.entity(response).build();
 	}

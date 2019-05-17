@@ -58,7 +58,7 @@ import lombok.ToString;
 			@NamedQuery(
 					name = "Order.findActiveOrder",
 					query = "select e from Order e "
-							+"where e.delivery_day > :delivery_day"
+							+"where e.status = :status"
 					)
 		}
 	)

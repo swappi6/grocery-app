@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ItemQuantity {
-	private long itemId;
+	private Long itemId;
 	private Integer quantity;
 	
 
