@@ -1,8 +1,5 @@
 package org.grocery.User;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -35,18 +32,6 @@ public class UserController {
     
     @Autowired
     private UserService userService;
-    private Map<Integer, String> gaali = new HashMap();
-    private Map<Integer, String> house = new HashMap();
-    private Map<Integer, String> potter = new HashMap();
-    private Map<Integer, String> pandav = new HashMap();
-    
-    
-    @GET
-    @UnitOfWork
-    @Path("/hello/{name}")
-    public Response sample( @PathParam(value = "name") String name) {
-        return Response.ok(name +"is a good boy").build();
-    }
     
     @POST
     @UnitOfWork
