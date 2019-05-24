@@ -16,4 +16,5 @@ public class GroceryErrors {
     public static final GroceryError INACTIVE_OFFER = new GroceryError("INACTIVE_OFFER" , "Offer Inactive");
     public static final GroceryError INVALID_MINAMOUNT = new GroceryError("INVALID_MINAMOUNT" , "Amount insufficient");
     public static final GroceryError INVALID_ADDRESS_ID = new GroceryError("INVALID_ADDRESS_ID" , "Address Doesn't exists");
+    public static final GroceryError INVALID_ORDER_ID = new GroceryError("INVALID_ORDER_ID", "Order doesn't exist");
 }    

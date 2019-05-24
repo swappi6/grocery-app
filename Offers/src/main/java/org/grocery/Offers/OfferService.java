@@ -49,7 +49,8 @@ public class OfferService {
 	        offer.setDescription(offerData.getDescription());
 	        InputStream inputStream =encodedStringHelper. getInputStream(offerData.getEncodedImage());
 	        if (inputStream != null) {
-	            String imageUrl = store.upload(offerData.getName(), Constants.Buckets.OFFER, inputStream);
+	          //  String imageUrl = store.upload(offerData.getName(), Constants.Buckets.OFFER, inputStream);
+	        	String imageUrl = store.upload(Constants.Buckets.OFFER, inputStream);
 	            offer.setImageUrl(imageUrl);
 	        }
 	        offerDao.create(offer);
@@ -64,9 +65,9 @@ public class OfferService {
 	        if (!optionalOffer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
 	        Offer offer = optionalOffer.get();
 	        if (offerData.getName() != null) {
-	            String imageUrl = store.rename(offer.getName(), Constants.Buckets.OFFER, offerData.getName());
+	           // String imageUrl = store.rename(offer.getName(), Constants.Buckets.OFFER, offerData.getName());
 	            offer.setName(offerData.getName());
-	            offer.setImageUrl(imageUrl);
+	           // offer.setImageUrl(imageUrl);
 	        }
 	        if (offerData.getType() != null)
 	            offer.setType(offerData.getType());
@@ -82,7 +83,8 @@ public class OfferService {
 	        	offer.setDescription(offerData.getDescription());
 	        InputStream inputStream =encodedStringHelper. getInputStream(offerData.getEncodedImage());
 	        if (inputStream != null) {
-	            String offerUrl = store.upload(offerData.getName(), Constants.Buckets.OFFER, inputStream);
+	            //String offerUrl = store.upload(offerData.getName(), Constants.Buckets.OFFER, inputStream);
+	        	String offerUrl = store.upload(Constants.Buckets.OFFER, inputStream);
 	            offer.setImageUrl(offerUrl);
 	        }
 	       

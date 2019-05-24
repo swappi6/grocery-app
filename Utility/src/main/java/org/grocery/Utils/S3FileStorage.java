@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -23,9 +24,12 @@ public class S3FileStorage implements FileStore{
     private static final String clientRegion = "ap-south-1";
     private static final BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAJMRZHQH5FIS3XZNA", "UW+nwoUyJdyGZ5icbBui2j/7rXMcsVPsiCTE+EhQ");
     private static final String s3Url = "https://s3.ap-south-1.amazonaws.com/{bucket}/{fileName}";
+    @Autowired
+    RandomGenerator randomGenerator;
+    
 
-    public String upload(String fileName, String bucketName, InputStream inputStream) throws GroceryException{
-        fileName = getEncodedString(fileName);
+    public String upload(String bucketName, InputStream inputStream) throws GroceryException{
+        String fileName = randomGenerator.generateUUID();
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
@@ -42,14 +46,8 @@ public class S3FileStorage implements FileStore{
         }
     }
     
-    private String gets3Url(String bucketName, String fileName) {
-        String url = s3Url;
-        return url.replace("{bucket}", bucketName)
-        .replace("{fileName}", fileName);
-    }
-    
-    public void delete(String fileName, String bucketName) throws GroceryException {
-        fileName = getEncodedString(fileName);
+    public void delete(String bucketName, String imageUrl) throws GroceryException {
+        String fileName = getImageNameFromUrl(imageUrl);
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
@@ -64,31 +62,38 @@ public class S3FileStorage implements FileStore{
         }
     }
     
-    public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException {
-        oldFileName = getEncodedString(oldFileName);
-        newFileName = getEncodedString(newFileName);
-        try {
-            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                    .withRegion(clientRegion)
-                    .build();
-            CopyObjectRequest copyRequest = new CopyObjectRequest(bucketName, oldFileName, bucketName, newFileName);
-            s3Client.copyObject(copyRequest);
-                          
-              //Delete the original
-            DeleteObjectRequest deleteRequest = new DeleteObjectRequest(bucketName, oldFileName);
-            s3Client.deleteObject(deleteRequest);
-            return gets3Url(bucketName, newFileName);
-
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_DELETE_ERROR);
-        }
+//    public String rename(String oldFileName, String bucketName, String newFileName) throws GroceryException {
+//        oldFileName = getEncodedString(oldFileName);
+//        newFileName = getEncodedString(newFileName);
+//        try {
+//            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+//                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+//                    .withRegion(clientRegion)
+//                    .build();
+//            CopyObjectRequest copyRequest = new CopyObjectRequest(bucketName, oldFileName, bucketName, newFileName);
+//            s3Client.copyObject(copyRequest);
+//                          
+//              //Delete the original
+//            DeleteObjectRequest deleteRequest = new DeleteObjectRequest(bucketName, oldFileName);
+//            s3Client.deleteObject(deleteRequest);
+//            return gets3Url(bucketName, newFileName);
+//
+//        }
+//        catch(Exception e) {
+//            e.printStackTrace();
+//            throw new GroceryException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), GroceryErrors.S3_DELETE_ERROR);
+//        }
+//    }
+    
+    private String gets3Url(String bucketName, String fileName) {
+        String url = s3Url;
+        return url.replace("{bucket}", bucketName)
+        .replace("{fileName}", fileName);
     }
     
-    private String getEncodedString(String inputString) {
-        return inputString.replaceAll(" ", "-");
+    private String getImageNameFromUrl(String imageUrl) {
+        String [] parsedUrl = imageUrl.split("/");
+        return parsedUrl[parsedUrl.length-1];
     }
 
 }

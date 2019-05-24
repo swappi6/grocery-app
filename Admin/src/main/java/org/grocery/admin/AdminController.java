@@ -1,9 +1,12 @@
 package org.grocery.admin;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -40,10 +43,23 @@ public class AdminController {
     @Path("/login")
     public Response getUserProfile(@Valid LoginProfile loginDetails) 
             throws GroceryException {
+	    System.out.println("bjhbjb");
        ResponseBuilder responseBuilder = Response.ok(); 
-       AdminProfile adminProfile = adminService.getUser(loginDetails);
+       AdminProfile adminProfile = adminService.login(loginDetails);
        return responseBuilder.entity(adminProfile)
     		   .build();
+    }
+	
+	@DELETE
+    @UnitOfWork
+    @Path("/logout")
+    public Response logout(@Context ContainerRequestContext context) 
+            throws GroceryException {
+       ResponseBuilder responseBuilder = Response.ok(); 
+       String accessToken = context.getHeaderString("ACCESS_TOKEN");
+       adminService.logout(accessToken);
+       return responseBuilder
+               .build();
     }
     
 	

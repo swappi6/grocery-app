@@ -11,14 +11,20 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.grocery.Auth.AuthFilter;
 import org.grocery.Auth.AuthToken;
 import org.grocery.Auth.AuthTokenDao;
+import org.grocery.Error.GroceryExceptionMapper;
 import org.grocery.Offers.Offer;
 import org.grocery.Offers.OfferDao;
-import org.grocery.Error.GroceryExceptionMapper;
+import org.grocery.Orders.Order;
+import org.grocery.Orders.OrderDao;
+import org.grocery.Orders.OrderItem;
 import org.grocery.User.User;
 import org.grocery.User.UserDao;
 import org.grocery.Utils.RedisService;
 import org.grocery.admin.Admin;
 import org.grocery.admin.AdminDao;
+import org.grocery.admin.filter.AdminAuthFilter;
+import org.grocery.admin.filter.ReadAuthFilter;
+import org.grocery.admin.filter.WriteAuthFilter;
 import org.grocery.category.Category;
 import org.grocery.category.CategoryDao;
 import org.grocery.config.GroceryConfiguration;
@@ -43,7 +49,7 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     }
     
 
-    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class) {
+    private final HibernateBundle<GroceryConfiguration> hibernate = new HibernateBundle<GroceryConfiguration>(User.class , AuthToken.class, Category.class, Item.class, Admin.class ,Offer.class,Order.class,OrderItem.class) {
         public DataSourceFactory getDataSourceFactory(GroceryConfiguration configuration) {
             return configuration.getDataSourceFactory();
         }
@@ -73,6 +79,10 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
             System.out.println(entry.getValue());
             env.jersey().register(entry.getValue());
         }
+        env.jersey().register(context.getBean(ReadAuthFilter.class));
+        env.jersey().register(context.getBean(AuthFilter.class));
+        env.jersey().register(context.getBean(AdminAuthFilter.class));
+        env.jersey().register(context.getBean(WriteAuthFilter.class));
     }
     
     @Override
@@ -84,7 +94,6 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
     public void run(GroceryConfiguration config, Environment env) {
         JedisPool jedisPool = initializeRedis(config);
         env.jersey().register(new GroceryExceptionMapper());
-        env.jersey().register(AuthFilter.class);
         env.jersey().register(new RedisService(jedisPool));
         env.jersey().register(new UserDao(hibernate.getSessionFactory()));
         env.jersey().register(new AuthTokenDao(hibernate.getSessionFactory()));
@@ -92,11 +101,12 @@ public class GroceryApplication extends Application<GroceryConfiguration> {
         env.jersey().register(new ItemDao(hibernate.getSessionFactory()));
         env.jersey().register(new OfferDao(hibernate.getSessionFactory()));
         env.jersey().register(new AdminDao(hibernate.getSessionFactory()));
+        env.jersey().register(new OrderDao(hibernate.getSessionFactory()));
         registerSpringConfig(config, env);
         final FilterRegistration.Dynamic cors =
                 env.servlets().addFilter("CORS", CrossOriginFilter.class);
         cors.setInitParameter("allowedOrigins", "*");
-        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin,AUTH_TOKEN");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin,AUTH_TOKEN,ACCESS_TOKEN");
         cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
         cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
 

@@ -1,6 +1,7 @@
 package org.grocery.item;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -68,7 +69,7 @@ public class ItemController {
     public Response search(@QueryParam(value = "param") String param) throws GroceryException{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         SearchResponse response = new SearchResponse();
-        List<Item> items = itemService.searchItem(param);
+        Set<Item> items = itemService.searchItem(param);
         response.setItems(items);
         return responseBuilder.entity(response)
                 .build();

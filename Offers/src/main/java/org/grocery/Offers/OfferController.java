@@ -42,7 +42,7 @@ public class OfferController {
 	
 	@GET
     @UnitOfWork
-    @Path("/get-all-offers")
+    @Path("/offers")
     public Response getAllOffers() throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         List<Offer> offers = offerService.getAllOffers();
@@ -52,7 +52,7 @@ public class OfferController {
 	
 	@GET
 	@UnitOfWork
-	@Path("/get-valid-offers")
+	@Path("/valid-offers")
 	public Response getAllValid()
 	{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();

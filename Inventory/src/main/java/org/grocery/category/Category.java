@@ -16,8 +16,11 @@ import javax.persistence.Table;
 
 import org.grocery.item.Item;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -68,6 +71,7 @@ public class Category {
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
     
+    //@JsonIgnore
     @ManyToOne()
     @JoinColumn(name="parent")
     private Category parent;
@@ -77,7 +81,6 @@ public class Category {
     private List<Category> subCategories;
     
     @JsonIgnore
-    @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private List<Item> items;
 

@@ -36,6 +36,7 @@ public class ItemDao extends AbstractDAO<Item> {
     
     public void delete(Item item) {
         currentSession().delete(item);
+        currentSession().flush();
    }
 
     public List<Item> findAll() {
@@ -55,6 +56,11 @@ public class ItemDao extends AbstractDAO<Item> {
     public List<Item> searchByDescription(String searchKeyword) {
         return list(namedQuery("Item.searchByDescription")
                 .setParameter("description", "%"+searchKeyword+"%"));
+    }
+    
+    public List<Item> findInIds(List<Long> itemIds) {
+        return list(namedQuery("Item.findInIds")
+                .setParameterList("itemIds", itemIds));
     }
 
 }
