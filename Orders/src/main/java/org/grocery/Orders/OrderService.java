@@ -105,9 +105,16 @@ public class OrderService {
 		//return orderDao.findByCreatedDate(orderByDate);
 		return orderDetailsList;
 	}
-	public List<Order> searchActiveOrder(OrderStatus status) throws GroceryException{
+	public List<OrderItemDetails> searchActiveOrder(OrderStatus status) throws GroceryException{
 		List<Order> activeOrder = orderDao.findActiveOrder(status);
-		return activeOrder;
+		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+		for (Order order : activeOrder) {
+			OrderItemDetails orderDetails = new OrderItemDetails();
+			mapper.copyProperties(orderDetails, order);
+			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetailsList.add(orderDetails);
+		}
+		return orderDetailsList;
 	}
 	
 
