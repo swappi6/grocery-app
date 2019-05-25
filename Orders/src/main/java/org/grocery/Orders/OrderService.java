@@ -92,8 +92,10 @@ public class OrderService {
 		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : orderByUserId) {
 			OrderItemDetails orderDetails = new OrderItemDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
 		return orderDetailsList;
@@ -103,8 +105,10 @@ public class OrderService {
 		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : orderByDate) {
 			OrderItemDetails orderDetails = new OrderItemDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
 		//return orderDao.findByCreatedDate(orderByDate);
