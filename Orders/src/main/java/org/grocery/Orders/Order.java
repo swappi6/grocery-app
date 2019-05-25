@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -100,6 +102,7 @@ public class Order {
 	@Column(name = "status" , nullable = true)
 	private OrderStatus status;
 
+	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "order")
 	private List<OrderItem> items;
 

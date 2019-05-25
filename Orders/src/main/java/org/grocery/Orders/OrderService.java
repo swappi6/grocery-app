@@ -13,6 +13,7 @@ import org.grocery.Utils.FileStore;
 import org.grocery.item.Item;
 import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
+import org.grocery.item.QuantizedItem;
 import org.grocery.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -118,12 +119,27 @@ public class OrderService {
 	}
 	
 
-	private List<Item> getItemdetails(Order order) throws GroceryException{
+	private List<QuantizedItem> getItemdetails(Order order) throws GroceryException{
 		List<Long> itemIds = new LinkedList<Long>();
 		for (OrderItem orderItem: order.getItems()) {
 			itemIds.add(orderItem.getItemId());
 		}
-		return itemService.getItems(itemIds);
+		List<Item> items = itemService.getItems(itemIds);
+		List<QuantizedItem> quantizedItemList = new LinkedList<>();
+		for (Item item : items) {
+		    QuantizedItem quantizedItem = new QuantizedItem();
+		    mapper.copyProperties(quantizedItem, item);
+		    Long quantity = null;
+		    for (OrderItem orderItem: order.getItems()) {
+	            if (orderItem.getItemId() == item.getId()) {
+	                quantity = orderItem.getQuantity();
+	                break;
+	            }
+	        }
+		    quantizedItem.setQuantity(quantity);
+		    quantizedItemList.add(quantizedItem);
+		}
+		return quantizedItemList;
 	}
 	
 }
