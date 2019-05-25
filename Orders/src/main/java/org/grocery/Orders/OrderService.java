@@ -8,6 +8,8 @@ import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
+import org.grocery.Offers.OfferData;
+import org.grocery.Offers.OfferService;
 import org.grocery.User.UserService;
 import org.grocery.Utils.FileStore;
 import org.grocery.item.Item;
@@ -31,6 +33,8 @@ public class OrderService {
 	UserService userService;
 	@Autowired
 	Mapper mapper;
+	@Autowired
+	OfferService offerService;
 	
 	
 	public void delete(Long id) throws GroceryException{
@@ -111,8 +115,10 @@ public class OrderService {
 		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : activeOrder) {
 			OrderItemDetails orderDetails = new OrderItemDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
 		return orderDetailsList;
