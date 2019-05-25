@@ -52,9 +52,9 @@ public class OrderController {
 	public Response searchOrderById(@QueryParam(value = "orderId")long orderId)throws GroceryException, Exception{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		//SearchOrderResponse response = new SearchOrderResponse();
-		Optional<Order> orders=orderService.searchOrderById(orderId);
+		OrderResponseDetails orders=orderService.searchOrderById(orderId);
 		//response.setOrder(order);
-		return responseBuilder.entity(orders.get()).build();
+		return responseBuilder.entity(orders).build();
 		//return responseBuilder.entity(response).build();
 	}
 
@@ -64,7 +64,7 @@ public class OrderController {
 	public Response searchOrderByUserId(@QueryParam(value = "userId")long userId)throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 //		SearchOrderResponse response = new SearchOrderResponse();
-		List<OrderItemDetails> orders =orderService.searchOrderByUserId(userId);
+		List<OrderResponseDetails> orders =orderService.searchOrderByUserId(userId);
 //		
 //		
 //		List<Item> itemDetails = itemService.getItems(26L);
@@ -80,7 +80,7 @@ public class OrderController {
 	public Response searchOrderByDate(@QueryParam(value = "date")Long date) throws GroceryException, ParseException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		//SearchOrderResponse response = new SearchOrderResponse();
-		List<OrderItemDetails> order = orderService.searchOrderByDate(date);
+		List<OrderResponseDetails> order = orderService.searchOrderByDate(date);
 		//response.setOrder(order);
 		return responseBuilder.entity(order).build();
 	}
@@ -90,7 +90,7 @@ public class OrderController {
 	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull OrderStatus status) throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		//SearchOrderResponse response = new SearchOrderResponse();
-		List<OrderItemDetails> order = orderService.searchActiveOrder(status);
+		List<OrderResponseDetails> order = orderService.searchActiveOrder(status);
 		//response.setOrder(order);
 		return responseBuilder.entity(order).build();
 	}
