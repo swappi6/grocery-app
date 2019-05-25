@@ -8,7 +8,7 @@ import org.grocery.Offers.OfferData;
 import lombok.Data;
 
 @Data
-public class OrderItemDetails extends Order{
+public class OrderResponseDetails extends Order{
 	List<QuantizedItem> itemDetails;
 	OfferData offerData;
 }
