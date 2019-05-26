@@ -17,8 +17,8 @@ public class AuthService {
     AuthTokenDao authDao;
     @Autowired
     RandomGenerator rand;
-    private static final Long accessExpiry = 300L;
-    private static final Long refreshExpiry = 30000L;
+    private static final Long accessExpiry = 3000000L;
+    private static final Long refreshExpiry = 300000000L;
     
     public AuthTokens refreshAccessToken(String refreshToken) throws GroceryException{
         AuthTokens tokens = new AuthTokens();

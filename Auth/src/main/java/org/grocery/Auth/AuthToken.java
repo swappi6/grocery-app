@@ -39,7 +39,7 @@ import lombok.ToString;
         @NamedQuery(
                 name = "AuthToken.findUserByValidAccessToken",
                 query = "select e.userId from AuthToken e "
-                        + "where e.accessToken = :accessToken and e.accessTokenExpiry > accessTokenExpiry"
+                        + "where e.accessToken = :accessToken and e.accessTokenExpiry > :accessTokenExpiry"
         ),
         @NamedQuery(
                 name = "AuthToken.findByUserAndDeviceId",

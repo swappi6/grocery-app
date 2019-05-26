@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.inject.Singleton;
 
+import org.grocery.admin.Admin;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,10 @@ public class AuthTokenDao extends AbstractDAO<AuthToken> {
     }
 
     public Optional<AuthToken> findById(Long id) {
-        return Optional.ofNullable(get(id));
+        Session session = factory.openSession();
+        Optional<AuthToken> token =  Optional.ofNullable(session.get(AuthToken.class, id));
+        session.flush();
+        return token;
     }
 
     public AuthToken create(AuthToken auth) {
@@ -45,10 +50,13 @@ public class AuthTokenDao extends AbstractDAO<AuthToken> {
     }
     
     public Long findUserByValidAccessToken(String accessToken, Long millis) {
-        return (Long) namedQuery("AuthToken.findUserByValidAccessToken")
+        Session session = factory.openSession();
+        Long userId = (Long) session.getNamedQuery("AuthToken.findUserByValidAccessToken")
                 .setParameter("accessToken", accessToken)
                 .setParameter("accessTokenExpiry", millis)
                 .uniqueResult();
+        session.flush();
+        return userId;
     }
     
     public Long findUserByRefreshToken(String refreshToken) {
