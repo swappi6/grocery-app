@@ -5,6 +5,6 @@ import org.grocery.User.User;
 import lombok.Data;
 
 @Data
-public class OrderUserDetails extends OrderItemDetails{
+public class OrderUserDetails extends OrderResponseDetails{
 	private User user;
 }
