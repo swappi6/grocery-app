@@ -110,7 +110,7 @@ public class OrderService {
 		return orderDetailsList;
 	}
 	public List<OrderResponseDetails> searchOrderByDate(Long timestamp) throws GroceryException{
-		List<Order> orderByDate = orderDao.findByCreatedDate(timestamp);
+		List<Order> orderByDate = orderDao.findByDeliveryDate(timestamp);
 		List<OrderResponseDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : orderByDate) {
 			OrderResponseDetails orderDetails = new OrderResponseDetails();
@@ -120,7 +120,6 @@ public class OrderService {
 			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
-		//return orderDao.findByCreatedDate(orderByDate);
 		return orderDetailsList;
 	}
 	public List<OrderResponseDetails> searchActiveOrder(List<OrderStatus> status) throws GroceryException{

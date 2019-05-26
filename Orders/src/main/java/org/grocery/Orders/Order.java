@@ -57,6 +57,11 @@ import lombok.ToString;
 					query = "Select e from Order e "
 							+"where DATE(e.created_at) = DATE(:created_at)"
 					),
+			@NamedQuery(
+                    name = "Order.findByDeliveryDate",
+                    query = "Select e from Order e "
+                            +"where DATE(e.delivery_day) = :delivery_day"
+                    ),
 	        @NamedQuery(
 	                name = "Order.findInStatus",
 	                query = "SELECT e FROM Order e "

@@ -61,10 +61,11 @@ public class OrderDao extends AbstractDAO<Order>{
                 .setParameterList("status", status));
     }
 	
-	/*public List<Order>findByAddressId(Long parent){
-		return list(namedQuery("Order.findByAddressId")
-				.setParameter("AddressId", parent));
-	}*/
+	public List<Order>findByDeliveryDate(Long millis){
+        Date date = new Date(millis);
+        return list(namedQuery("Order.findByDeliveryDate")
+                .setParameter("delivery_day", date));
+    }
 	
 
 }
