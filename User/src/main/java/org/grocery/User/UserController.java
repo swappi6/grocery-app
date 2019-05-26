@@ -74,7 +74,18 @@ public class UserController {
             throws GroceryException {
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
         Long userId = (Long) context.getProperty("userId");
-        UserProfile user = userService.getUser(userId);
+        User user = userService.getUser(userId);
+        return responseBuilder.entity(user)
+                .build();
+    }
+    
+    @GET
+    @UnitOfWork
+    @Path("/get_user_profile/{userId}")
+    public Response getUserProfile(@PathParam(value = "userId") Long userId) 
+            throws GroceryException {
+        ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+        User user = userService.getUser(userId);
         return responseBuilder.entity(user)
                 .build();
     }
