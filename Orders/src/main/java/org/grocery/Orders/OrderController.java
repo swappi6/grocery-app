@@ -1,11 +1,7 @@
 package org.grocery.Orders;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,11 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
-import org.grocery.User.User;
 import org.grocery.User.UserService;
-import org.grocery.item.Item;
 import org.grocery.item.ItemService;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -87,7 +80,7 @@ public class OrderController {
 	@GET
 	@UnitOfWork
 	@Path("/search-order")
-	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull OrderStatus status) throws GroceryException{
+	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull List<OrderStatus> status) throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
 		//SearchOrderResponse response = new SearchOrderResponse();
 		List<OrderResponseDetails> order = orderService.searchActiveOrder(status);

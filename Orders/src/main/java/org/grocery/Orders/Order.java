@@ -57,11 +57,11 @@ import lombok.ToString;
 					query = "Select e from Order e "
 							+"where DATE(e.created_at) = DATE(:created_at)"
 					),
-			@NamedQuery(
-					name = "Order.findActiveOrder",
-					query = "select e from Order e "
-							+"where e.status = :status"
-					)
+	        @NamedQuery(
+	                name = "Order.findInStatus",
+	                query = "SELECT e FROM Order e "
+	                        + "where e.status IN (:status)"
+	        )
 		}
 	)
 

@@ -123,8 +123,8 @@ public class OrderService {
 		//return orderDao.findByCreatedDate(orderByDate);
 		return orderDetailsList;
 	}
-	public List<OrderResponseDetails> searchActiveOrder(OrderStatus status) throws GroceryException{
-		List<Order> activeOrder = orderDao.findActiveOrder(status);
+	public List<OrderResponseDetails> searchActiveOrder(List<OrderStatus> status) throws GroceryException{
+		List<Order> activeOrder = orderDao.findInStatus(status);
 		List<OrderResponseDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : activeOrder) {
 			OrderResponseDetails orderDetails = new OrderResponseDetails();
