@@ -3,9 +3,6 @@ package org.grocery.Auth;
 import java.util.List;
 import java.util.Optional;
 
-import javax.inject.Singleton;
-
-import org.grocery.admin.Admin;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
