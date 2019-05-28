@@ -16,7 +16,8 @@ public class RandomGeneratorImpl implements RandomGenerator{
 
     public String generateOtp() {
         String id = String.format("%04d", rand.nextInt(10000));
-        return id;
+//        return id;
+        return "0000";
     }
 
     public String generateUUID() {
