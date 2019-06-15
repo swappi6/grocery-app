@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ItemDataWithQuantity {
-    private ItemData itemData;
+    private Item item;
     private Integer quantity;
 }

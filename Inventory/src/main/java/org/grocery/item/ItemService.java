@@ -27,7 +27,7 @@ public class ItemService {
     FileStore store;
     @Autowired
     EncodedStringHelper encodedStringHelper;
-    
+
     public List<Item> getAllItems() throws Exception {
         List<Item> items = itemDao.findAll();
         return items;
