@@ -1,8 +1,8 @@
 package org.grocery.Subscription;
 
-import com.amazonaws.services.mediastoredata.model.transform.ItemMarshaller;
 import org.grocery.Error.GroceryException;
 import org.grocery.item.*;
+import org.grocery.mapper.Mapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,9 @@ public class SubscriptionService {
 
     @Autowired
     OptionalMappingHelper<Subscription, GroceryException> optionalMappingHelper;
+
+    @Autowired
+    Mapper mapper;
 
     public Double addSubscription(SubscriptionInputData data) throws GroceryException {
         Timestamp current = currentTimestamp();
@@ -147,19 +150,27 @@ public class SubscriptionService {
                     });
                 }
                 List<Item> items = itemService.getItems(new ArrayList<>(itemIdWithQuantities.keySet()));
-                ArrayList<ItemDataWithQuantity> itemDataWithQuantities = new ArrayList<>();
+                ArrayList<QuantizedItem> quantizedItems = new ArrayList<>();
                 items.forEach(item -> {
-                    ItemDataWithQuantity itemDataWithQuantity = new ItemDataWithQuantity();
-                    itemDataWithQuantity.setItem(item);
-                    itemDataWithQuantity.setQuantity(itemIdWithQuantities.get(item.getId()));
-                    itemDataWithQuantities.add(itemDataWithQuantity);
+                    QuantizedItem quantizedItem = new QuantizedItem();
+                    mapper.copyProperties(quantizedItem, item);
+                    quantizedItem.setQuantity(itemIdWithQuantities.get(item.getId()));
+                    quantizedItems.add(quantizedItem);
+                });
+                ArrayList<SubscriptionOrderData> ordersResponse = new ArrayList<>();
+                orders.forEach(subscriptionOrder -> {
+                    SubscriptionOrderData orderData = new SubscriptionOrderData();
+                    orderData.setId(subscriptionOrder.getId());
+                    orderData.setDeliveryDate(subscriptionOrder.getDeliveryDate());
+                    orderData.setOrderStatus(subscriptionOrder.getOrderStatus());
+                    ordersResponse.add(orderData);
                 });
                 long subscriptionsLeft = orders.stream().filter(o ->
                         o.getOrderStatus() == SubscriptionOrderStatus.PENDING_FOR_DELIVERY).count();
                 outputData.setFrequency(getArrayListFromString(subscription.getFrequency()));
                 outputData.setSubscriptionStatus(subscription.getStatus());
-                outputData.setSubscriptionOrders(orders);
-                outputData.setItemDataWithQuantities(itemDataWithQuantities);
+                outputData.setSubscriptionOrders(ordersResponse);
+                outputData.setQuantizedItems(quantizedItems);
                 outputData.setNumOfSubscriptionsLeft(subscriptionsLeft);
                 outputData.setUserId(userId);
                 outputData.setSubscriptionId(subscription.getId());
