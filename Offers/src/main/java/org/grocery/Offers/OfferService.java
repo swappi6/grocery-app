@@ -92,6 +92,7 @@ public class OfferService {
 	    }
 	 
 	 public OfferData getOffer(Long offerId) throws GroceryException{
+	        if (offerId == null) return null;
 	        Optional<Offer> offer = offerDao.findById(offerId);
 	        if (!offer.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_OFFER_ID);
 	        OfferData data = new OfferData();

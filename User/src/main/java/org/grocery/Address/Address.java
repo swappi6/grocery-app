@@ -7,9 +7,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import org.grocery.User.User;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +35,7 @@ import lombok.ToString;
 		@NamedQuery(
 					name ="Address.findByUserid",
 					query ="SELECT e FROM Address e "
-							+ "where e.userId = :userid"
+							+ "where e.user = :user"
 				),	
 		@NamedQuery(
 					name ="Address.findById",
@@ -43,8 +49,10 @@ public class Address {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="userId",nullable=false)
-	private Long userId;
+	@ManyToOne()
+	@JsonIgnore
+    @JoinColumn(name= "userId")
+	private User user;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type",nullable=false)

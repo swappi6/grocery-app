@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.grocery.item.Item;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -54,16 +55,17 @@ public class OrderDao extends AbstractDAO<Order>{
 		return list(namedQuery("Order.findByUserId")
 				.setParameter("userId", parent));
 	}
-	public List<Order>findActiveOrder(OrderStatus status){
-		//Date date = new Date(millis);
-		return list(namedQuery("Order.findActiveOrder")
-				.setParameter("status", status));
-	}
 	
-	/*public List<Order>findByAddressId(Long parent){
-		return list(namedQuery("Order.findByAddressId")
-				.setParameter("AddressId", parent));
-	}*/
+	public List<Order> findInStatus(List<OrderStatus> status) {
+        return list(namedQuery("Order.findInStatus")
+                .setParameterList("status", status));
+    }
+	
+	public List<Order>findByDeliveryDate(Long millis){
+        Date date = new Date(millis);
+        return list(namedQuery("Order.findByDeliveryDate")
+                .setParameter("delivery_day", date));
+    }
 	
 
 }

@@ -8,11 +8,14 @@ import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
+import org.grocery.Offers.OfferData;
+import org.grocery.Offers.OfferService;
 import org.grocery.User.UserService;
 import org.grocery.Utils.FileStore;
 import org.grocery.item.Item;
 import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
+import org.grocery.item.QuantizedItem;
 import org.grocery.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +33,8 @@ public class OrderService {
 	UserService userService;
 	@Autowired
 	Mapper mapper;
+	@Autowired
+	OfferService offerService;
 	
 	
 	public void delete(Long id) throws GroceryException{
@@ -61,8 +66,17 @@ public class OrderService {
 //	//public Item itemDetails (Long itemIds, Order order) throws Exception, GroceryException {
 //		
 //	}
-	public Optional<Order> searchOrderById (long id) throws GroceryException, Exception{
+//	public Optional<Order> searchOrderById (long id) throws GroceryException, Exception{
+	public OrderResponseDetails searchOrderById (long id) throws GroceryException, Exception{
 		Optional<Order> orderById = orderDao.findById(id);
+		if(!orderById.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ORDER_ID) ;
+		Order order = orderById.get();
+		OrderResponseDetails orderItemDetails = new OrderResponseDetails();
+		OfferData offerData = offerService.getOffer(order.getOfferId());
+		mapper.copyProperties(orderItemDetails , order);
+		orderItemDetails.setItemDetails(getItemdetails(order));
+		orderItemDetails.setOfferData(offerData);
+		return orderItemDetails;
 //		List<OrderItemDetails> orderDetailList = new LinkedList<>();
 //		for(Order order : orderById) {
 //			OrderItemDetails orderItemDetails = new OrderItemDetails();
@@ -70,7 +84,7 @@ public class OrderService {
 //			orderItemDetails.setItemDetails(getItemdetails(orderById));
 //			orderDetailList.add(orderItemDetails);
 //		}
-		return orderById; 
+//		return orderById; 
 		
 	}
 	public void updateOrder(UpdateOrder updateOrder, long orderId) throws GroceryException {
@@ -82,48 +96,68 @@ public class OrderService {
 		orderDao.update(order);
 	}
 	
-	public List<OrderItemDetails> searchOrderByUserId (long search) throws GroceryException{
+	public List<OrderResponseDetails> searchOrderByUserId (long search) throws GroceryException{
 		List<Order> orderByUserId = orderDao.findByUserId(search);
-		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+		List<OrderResponseDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : orderByUserId) {
-			OrderItemDetails orderDetails = new OrderItemDetails();
+			OrderResponseDetails orderDetails = new OrderResponseDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
 		return orderDetailsList;
 	}
-	public List<OrderItemDetails> searchOrderByDate(Long timestamp) throws GroceryException{
-		List<Order> orderByDate = orderDao.findByCreatedDate(timestamp);
-		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+	public List<OrderResponseDetails> searchOrderByDate(Long timestamp) throws GroceryException{
+		List<Order> orderByDate = orderDao.findByDeliveryDate(timestamp);
+		List<OrderResponseDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : orderByDate) {
-			OrderItemDetails orderDetails = new OrderItemDetails();
+			OrderResponseDetails orderDetails = new OrderResponseDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
-		//return orderDao.findByCreatedDate(orderByDate);
 		return orderDetailsList;
 	}
-	public List<OrderItemDetails> searchActiveOrder(OrderStatus status) throws GroceryException{
-		List<Order> activeOrder = orderDao.findActiveOrder(status);
-		List<OrderItemDetails> orderDetailsList = new LinkedList<>();
+	public List<OrderResponseDetails> searchActiveOrder(List<OrderStatus> status) throws GroceryException{
+		List<Order> activeOrder = orderDao.findInStatus(status);
+		List<OrderResponseDetails> orderDetailsList = new LinkedList<>();
 		for (Order order : activeOrder) {
-			OrderItemDetails orderDetails = new OrderItemDetails();
+			OrderResponseDetails orderDetails = new OrderResponseDetails();
+			OfferData offerData = offerService.getOffer(order.getOfferId());
 			mapper.copyProperties(orderDetails, order);
 			orderDetails.setItemDetails(getItemdetails(order));
+			orderDetails.setOfferData(offerData);
 			orderDetailsList.add(orderDetails);
 		}
 		return orderDetailsList;
 	}
 	
 
-	private List<Item> getItemdetails(Order order) throws GroceryException{
+	private List<QuantizedItem> getItemdetails(Order order) throws GroceryException{
 		List<Long> itemIds = new LinkedList<Long>();
 		for (OrderItem orderItem: order.getItems()) {
 			itemIds.add(orderItem.getItemId());
 		}
-		return itemService.getItems(itemIds);
+		List<Item> items = itemService.getItems(itemIds);
+		List<QuantizedItem> quantizedItemList = new LinkedList<>();
+		for (Item item : items) {
+		    QuantizedItem quantizedItem = new QuantizedItem();
+		    mapper.copyProperties(quantizedItem, item);
+		    Long quantity = null;
+		    for (OrderItem orderItem: order.getItems()) {
+	            if (orderItem.getItemId() == item.getId()) {
+	                quantity = orderItem.getQuantity();
+	                break;
+	            }
+	        }
+		    quantizedItem.setQuantity(quantity);
+		    quantizedItemList.add(quantizedItem);
+		}
+		return quantizedItemList;
 	}
 	
 }

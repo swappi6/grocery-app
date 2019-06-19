@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 
 import org.grocery.Error.GroceryErrors;
 import org.grocery.Error.GroceryException;
+import org.grocery.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,9 @@ public class AddressService {
 	
 	public void createAddress(AddressData addressData)throws GroceryException{
 		Address address = new Address();
-		address.setUserId(addressData.getUserid());
+		User user = new User();
+		user.setId(addressData.getUserid());
+		address.setUser(user);
 		address.setName(addressData.getName());
 		address.setType(addressData.getType());
 		address.setLatitude(addressData.getLatitude());

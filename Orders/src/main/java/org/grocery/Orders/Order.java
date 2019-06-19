@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -56,10 +58,15 @@ import lombok.ToString;
 							+"where DATE(e.created_at) = DATE(:created_at)"
 					),
 			@NamedQuery(
-					name = "Order.findActiveOrder",
-					query = "select e from Order e "
-							+"where e.status = :status"
-					)
+                    name = "Order.findByDeliveryDate",
+                    query = "Select e from Order e "
+                            +"where DATE(e.delivery_day) = :delivery_day"
+                    ),
+	        @NamedQuery(
+	                name = "Order.findInStatus",
+	                query = "SELECT e FROM Order e "
+	                        + "where e.status IN (:status)"
+	        )
 		}
 	)
 
@@ -100,6 +107,7 @@ public class Order {
 	@Column(name = "status" , nullable = true)
 	private OrderStatus status;
 
+	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "order")
 	private List<OrderItem> items;
 

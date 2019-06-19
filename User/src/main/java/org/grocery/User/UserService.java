@@ -62,14 +62,15 @@ public class UserService {
         userDao.update(user.get());
     }
     
-    public UserProfile getUser(Long userId) throws GroceryException{
+    public User getUser(Long userId) throws GroceryException{
         Optional<User> user = userDao.findById(userId);
         if (!user.isPresent()) throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_USER);
-        UserProfile profile = new UserProfile();
-        profile.setFirstName(user.get().getFirstName());
-        profile.setLastName(user.get().getLastName());
-        profile.setEmail(user.get().getEmail());
-        return profile;
+        return user.get();
+//        UserProfile profile = new UserProfile();
+//        profile.setFirstName(user.get().getFirstName());
+//        profile.setLastName(user.get().getLastName());
+//        profile.setEmail(user.get().getEmail());
+//        return profile;
         
     }
     

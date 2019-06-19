@@ -33,8 +33,6 @@ public class AddressDao extends AbstractDAO<Address> {
 		 currentSession().delete(address);
 	}
 	
-	
-	
 	public Address update(Address address) {
 		return persist(address);
 	}
