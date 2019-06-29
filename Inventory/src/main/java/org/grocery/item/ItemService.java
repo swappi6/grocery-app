@@ -129,7 +129,7 @@ public class ItemService {
     private Double getPrice(List<Item> items, Long id) throws GroceryException{
         Optional<Item> item = items.stream().filter(e -> id.equals(e.getId())).findFirst();
         if (item.isPresent()) {
-            return item.get().getPrice();
+            return item.get().getDiscountedPrice();
         }
         throw new GroceryException(Response.Status.BAD_REQUEST.getStatusCode(),GroceryErrors.INVALID_ITEM_ID);
     }

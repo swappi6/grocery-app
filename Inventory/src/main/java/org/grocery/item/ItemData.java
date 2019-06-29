@@ -17,6 +17,7 @@ public class ItemData {
     private String encodedImage;
     @NotNull
     private Double price;
+    @NotNull
     private Double discountedPrice;
     private Boolean subscribable;
     private String availability;
