@@ -94,7 +94,7 @@ public class OrderController {
 	@Auth
 	@Path("/create-order")
 	public Response createOrder(@Valid OrderData orderData, @Context ContainerRequestContext context) throws GroceryException, Exception {
-		ResponseBuilder responseBuilder = Response.noContent();
+		ResponseBuilder responseBuilder = Response.ok();
 		Long userId = (Long) context.getProperty("userId");
 		OrderResponse response = orderService.createOrder(orderData, userId);
 		return responseBuilder.entity(response).build();

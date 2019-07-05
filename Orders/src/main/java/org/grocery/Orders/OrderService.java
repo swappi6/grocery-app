@@ -60,7 +60,7 @@ public class OrderService {
 			items.add(mapToOrderItem(itemQauntity, order));
  		order.setItems(items);
  		orderDao.create(order);
- 		String paymentId = paymentService.createOrder(price);
+ 		String paymentId = paymentService.createOrder(price*100);
  		response.setPaymentId(paymentId);
  		return response;
 	}
