@@ -93,11 +93,11 @@ public class OrderController {
 	@UnitOfWork
 	@Auth
 	@Path("/create-order")
-	public Response createOrder(@Valid OrderData orderData, @Context ContainerRequestContext context) throws GroceryException {
+	public Response createOrder(@Valid OrderData orderData, @Context ContainerRequestContext context) throws GroceryException, Exception {
 		ResponseBuilder responseBuilder = Response.noContent();
 		Long userId = (Long) context.getProperty("userId");
-		orderService.createOrder(orderData, userId);
-		return responseBuilder.build();
+		OrderResponse response = orderService.createOrder(orderData, userId);
+		return responseBuilder.entity(response).build();
 	}
 	@PUT
 	@UnitOfWork

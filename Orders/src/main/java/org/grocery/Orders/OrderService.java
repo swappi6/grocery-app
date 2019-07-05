@@ -17,6 +17,7 @@ import org.grocery.item.ItemQuantity;
 import org.grocery.item.ItemService;
 import org.grocery.item.QuantizedItem;
 import org.grocery.mapper.Mapper;
+import org.grocery.payment.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,8 @@ public class OrderService {
 	Mapper mapper;
 	@Autowired
 	OfferService offerService;
+	@Autowired
+	PaymentService paymentService;
 	
 	
 	public void delete(Long id) throws GroceryException{
@@ -44,17 +47,22 @@ public class OrderService {
 		orderDao.delete(order);
 	}
 	
-	public void createOrder(OrderData orderData, Long userId) throws GroceryException{
-		Order order = new Order();
+	public OrderResponse createOrder(OrderData orderData, Long userId) throws Exception, GroceryException{
+	    OrderResponse response = new OrderResponse();
+	    Order order = new Order();
 		order.setUserId(userId);
 		order.setAddressId(orderData.getAddressId());
 		order.setOfferId(orderData.getOfferId());
-		//order.setActualPrice(itemService.getCartPrice(orderData.getItems()));
+		Double price = itemService.getCartPrice(orderData.getItems());
+		order.setActualPrice(price);
 		List<OrderItem> items = new LinkedList<OrderItem>();
 		for (ItemQuantity itemQauntity : orderData.getItems())
 			items.add(mapToOrderItem(itemQauntity, order));
  		order.setItems(items);
  		orderDao.create(order);
+ 		String paymentId = paymentService.createOrder(price);
+ 		response.setPaymentId(paymentId);
+ 		return response;
 	}
 	private OrderItem mapToOrderItem (ItemQuantity itemQauntity, Order order) {
 		OrderItem orderItem = new OrderItem();
