@@ -27,10 +27,10 @@ public class AddressService {
 		return address;
 	}
 	
-	public void createAddress(AddressData addressData)throws GroceryException{
+	public void createAddress(Long userId, AddressData addressData)throws GroceryException{
 		Address address = new Address();
 		User user = new User();
-		user.setId(addressData.getUserid());
+		user.setId(userId);
 		address.setUser(user);
 		address.setName(addressData.getName());
 		address.setType(addressData.getType());

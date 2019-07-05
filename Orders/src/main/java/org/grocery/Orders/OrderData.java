@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class OrderData {
 	@NotNull
-	private Long userId;
 	private Long addressId;
 	private Long offerId;
 	private List<ItemQuantity> items;

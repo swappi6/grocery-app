@@ -44,9 +44,9 @@ public class OrderService {
 		orderDao.delete(order);
 	}
 	
-	public void createOrder(OrderData orderData) throws GroceryException{
+	public void createOrder(OrderData orderData, Long userId) throws GroceryException{
 		Order order = new Order();
-		order.setUserId(orderData.getUserId());
+		order.setUserId(userId);
 		order.setAddressId(orderData.getAddressId());
 		order.setOfferId(orderData.getOfferId());
 		//order.setActualPrice(itemService.getCartPrice(orderData.getItems()));

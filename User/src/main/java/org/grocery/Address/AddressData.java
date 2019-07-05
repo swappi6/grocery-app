@@ -10,9 +10,6 @@ import lombok.Setter;
 public class AddressData {
 	
 	@NotNull
-	private Long userid;
-	
-	@NotNull
 	private String name;
 	
 	@NotNull

@@ -11,10 +11,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.grocery.Auth.Auth;
 import org.grocery.Error.GroceryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,15 +52,18 @@ public class AddressController {
 	
 	@POST
 	@UnitOfWork
+	@Auth
 	@Path("/create-address")
-	public Response createAddress(@Valid AddressData addressData) throws GroceryException {
+	public Response createAddress(@Valid AddressData addressData, @Context ContainerRequestContext context) throws GroceryException {
 	        ResponseBuilder responseBuilder = Response.noContent();
-	        addressService.createAddress(addressData);
+	        Long userId = (Long) context.getProperty("userId");
+	        addressService.createAddress(userId, addressData);
 	        return responseBuilder.build();
 	}
 	
 	@DELETE
 	@UnitOfWork
+	@Auth
 	@Path("/delete-address/{addressId}")
 	public Response deleteAddress(@PathParam(value = "addressId") Long addressId) throws GroceryException {
 	        ResponseBuilder responseBuilder = Response.noContent();
@@ -67,9 +73,11 @@ public class AddressController {
 	
 	@GET
 	@UnitOfWork
-	@Path("/get-by-userid/{userId}")
-	public Response getBYUserId(@PathParam(value = "userId") Long userId) throws GroceryException, Exception {
+	@Path("/get-by-userid")
+	@Auth
+	public Response getBYUserId(@Context ContainerRequestContext context) throws GroceryException, Exception {
 		  ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+		  Long userId = (Long) context.getProperty("userId");
 		  List<Address> address = addressService.getByUserId(userId);
 		  return responseBuilder.entity(address)
 	                .build();
@@ -77,6 +85,7 @@ public class AddressController {
 	
 	@PUT
 	@UnitOfWork
+	@Auth
 	@Path("/update-address/{addressId}")
 	public Response updateAddress(AddressData addressData, @PathParam(value = "addressId") Long addressId) throws GroceryException {
 	        ResponseBuilder responseBuilder = Response.noContent();

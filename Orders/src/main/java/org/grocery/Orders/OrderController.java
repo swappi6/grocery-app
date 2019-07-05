@@ -14,10 +14,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.grocery.Auth.Auth;
 import org.grocery.Error.GroceryException;
 import org.grocery.User.UserService;
 import org.grocery.admin.filter.ReadAuth;
@@ -53,9 +56,11 @@ public class OrderController {
 
 	@GET
 	@UnitOfWork
+	@Auth
 	@Path("/search-order-by-user-id")
-	public Response searchOrderByUserId(@QueryParam(value = "userId")long userId)throws GroceryException{
+	public Response searchOrderByUserId(@Context ContainerRequestContext context)throws GroceryException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+		Long userId = (Long) context.getProperty("userId");
 		List<OrderResponseDetails> orders =orderService.searchOrderByUserId(userId);
 		OrderList orderList = new OrderList();
         orderList.setOrders(orders);
@@ -87,10 +92,12 @@ public class OrderController {
 	
 	@POST
 	@UnitOfWork
+	@Auth
 	@Path("/create-order")
-	public Response createOrder(@Valid OrderData orderData) throws GroceryException {
+	public Response createOrder(@Valid OrderData orderData, @Context ContainerRequestContext context) throws GroceryException {
 		ResponseBuilder responseBuilder = Response.noContent();
-		orderService.createOrder(orderData);
+		Long userId = (Long) context.getProperty("userId");
+		orderService.createOrder(orderData, userId);
 		return responseBuilder.build();
 	}
 	@PUT
