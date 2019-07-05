@@ -17,7 +17,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
-import org.grocery.admin.filter.AdminAuth;
+import org.grocery.admin.filter.ReadAuth;
+import org.grocery.admin.filter.WriteAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class CategoryController {
 
     @GET
     @UnitOfWork
-//    @AdminAuth
+    @ReadAuth
     @Path("/categories")
     public Response getCategories() throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
@@ -56,7 +57,7 @@ public class CategoryController {
     
     @GET
     @UnitOfWork
-//    @ReadAuth
+    @ReadAuth
     @Path("/sub-category")
     public Response getSubCategories(@QueryParam(value = "parent") Long parent) throws Exception{
         ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
@@ -67,6 +68,7 @@ public class CategoryController {
     
     @POST
     @UnitOfWork
+    @WriteAuth
     @Path("/create-category")
     public Response updateUserProfile(@Valid CategoryData categoryData) throws GroceryException {
     	 ResponseBuilder responseBuilder = Response.noContent();
@@ -76,6 +78,7 @@ public class CategoryController {
     
     @PUT
     @UnitOfWork
+    @WriteAuth
     @Path("/update-category/{categoryId}")
     public Response updateItem(@PathParam(value = "categoryId") Long categoryId, CategoryData categoryData) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();
@@ -85,6 +88,7 @@ public class CategoryController {
     
     @DELETE
     @UnitOfWork
+    @WriteAuth
     @Path("/delete-category/{categoryId}")
     public Response deleteItem(@PathParam(value = "categoryId") Long categoryId) throws GroceryException {
         ResponseBuilder responseBuilder = Response.noContent();

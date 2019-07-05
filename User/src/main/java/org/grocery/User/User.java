@@ -2,6 +2,7 @@ package org.grocery.User;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,8 +48,9 @@ import lombok.ToString;
 public class User {
     
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     
     @Column(name = "country_code", nullable = false)
     private String countryCode;
@@ -61,10 +63,6 @@ public class User {
 
     @Column(name = "last_name", nullable = true)
     private String lastName;
-    
-    @Version
-    @Column(name = "lock_version", nullable = false)
-    private Integer lockVersion;
     
     @Column(name = "email", nullable = true)
     private String email;

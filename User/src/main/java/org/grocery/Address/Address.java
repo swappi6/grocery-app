@@ -1,5 +1,6 @@
 package org.grocery.Address;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -46,12 +47,12 @@ import lombok.ToString;
 		)
 public class Address {
 	@Id
+	@Column(name = "id", nullable = false)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne()
-	@JsonIgnore
-    @JoinColumn(name= "userId")
+    @JoinColumn(name= "user_id")
+	@ManyToOne ()
 	private User user;
 	
 	@Enumerated(EnumType.STRING)

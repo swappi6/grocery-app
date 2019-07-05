@@ -20,6 +20,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.grocery.Error.GroceryException;
 import org.grocery.User.UserService;
+import org.grocery.admin.filter.ReadAuth;
+import org.grocery.admin.filter.WriteAuth;
 import org.grocery.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,6 +43,7 @@ public class OrderController {
 	
 	@GET
 	@UnitOfWork
+	@ReadAuth
 	@Path("/searchById")
 	public Response searchOrderById(@QueryParam(value = "orderId")long orderId)throws GroceryException, Exception{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
@@ -60,6 +63,7 @@ public class OrderController {
 	}
 	@GET
 	@UnitOfWork
+	@ReadAuth
 	@Path("/search-order-by-date")
 	public Response searchOrderByDate(@QueryParam(value = "date")Long date) throws GroceryException, ParseException{
 		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
@@ -68,16 +72,19 @@ public class OrderController {
         orderList.setOrders(orders);
 		return responseBuilder.entity(orderList).build();
 	}
-	@GET
-	@UnitOfWork
-	@Path("/search-order")
-	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull List<OrderStatus> status) throws GroceryException{
-		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
-		List<OrderResponseDetails> orders = orderService.searchActiveOrder(status);
-		OrderList orderList = new OrderList();
-		orderList.setOrders(orders);
-		return responseBuilder.entity(orderList).build();
-	}
+	
+//	@GET
+//	@UnitOfWork
+//	@ReadAuth
+//	@Path("/search-order")
+//	public Response searchActiveOrder(@QueryParam(value = "status") @NotNull List<OrderStatus> status) throws GroceryException{
+//		ResponseBuilder responseBuilder = javax.ws.rs.core.Response.ok();
+//		List<OrderResponseDetails> orders = orderService.searchActiveOrder(status);
+//		OrderList orderList = new OrderList();
+//		orderList.setOrders(orders);
+//		return responseBuilder.entity(orderList).build();
+//	}
+	
 	@POST
 	@UnitOfWork
 	@Path("/create-order")
@@ -88,6 +95,7 @@ public class OrderController {
 	}
 	@PUT
 	@UnitOfWork
+	@WriteAuth
 	@Path("/update/{orderId}")
 	public Response updateOrder(@PathParam(value= "orderId") Long orderId, UpdateOrder updateOrder) throws GroceryException{
 		ResponseBuilder responseBuilder = Response.noContent();
