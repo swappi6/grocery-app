@@ -52,7 +52,8 @@ public class Address {
 	private Long id;
 	
     @JoinColumn(name= "user_id")
-	@ManyToOne ()
+	@ManyToOne()
+    @JsonIgnore
 	private User user;
 	
 	@Enumerated(EnumType.STRING)
