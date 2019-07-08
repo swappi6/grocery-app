@@ -167,7 +167,7 @@ public class SubscriptionService {
                 });
                 long subscriptionsLeft = orders.stream().filter(o ->
                         o.getOrderStatus() == SubscriptionOrderStatus.PENDING_FOR_DELIVERY).count();
-                outputData.setFrequency(getArrayListFromString(subscription.getFrequency()));
+                outputData.setFrequency(subscription.getFrequency());
                 outputData.setSubscriptionStatus(subscription.getStatus());
                 outputData.setSubscriptionOrders(ordersResponse);
                 outputData.setQuantizedItems(quantizedItems);

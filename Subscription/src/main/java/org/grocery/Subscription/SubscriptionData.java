@@ -20,5 +20,5 @@ public class SubscriptionData {
     private long userId;
     private ArrayList<QuantizedItem> quantizedItems;
     private List<SubscriptionOrderData> subscriptionOrders;
-    private ArrayList<Integer> frequency;
+    private String frequency;
 }
